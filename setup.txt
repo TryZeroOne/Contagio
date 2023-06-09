@@ -1,0 +1,23 @@
+=================================
+         Database setup
+=================================
+
+rm sqlite/database.db
+mkdir sqlite
+touch sqlite/database.db
+
+sqlite3 sqlite/database.db "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, login TEXT, password TEXT)"
+
+sqlite3 sqlite/database.db "CREATE TABLE IF NOT EXISTS allowed (id INTEGER PRIMARY KEY, ip TEXT)"
+
+sqlite3 sqlite/database.db "INSERT INTO users(login, password) VALUES('jNgkxwDrDBJf/0DIwYXRTF3+fzKBSvrAebp8INk7w8CCGTJDxCD+0i7yR0+7hYgOe8HKdyFQofdZ+N3ryndxHw==', 'jNgkxwDrDBJf/0DIwYXRTF3+fzKBSvrAebp8INk7w8CCGTJDxCD+0i7yR0+7hYgOe8HKdyFQofdZ+N3ryndxHw==')"
+
+// Insert login = root and password = root. if u want to change login or password write ' python3 init.py hash login password '
+
+=================================
+        Easy database setup
+=================================
+
+python3 init.py login password
+
+

@@ -1,0 +1,26 @@
+# LOADER
+
+FROM alpine:latest
+
+RUN apk add --no-cache git make musl-dev go
+ENV GOROOT /usr/lib/go
+ENV GOPATH /go
+ENV PATH /go/bin:$PATH
+RUN mkdir -p ${GOPATH}/src ${GOPATH}/bin
+RUN ulimit -n 99999
+
+RUN apk add file
+RUN apk add iptables
+
+RUN mkdir /contagio
+WORKDIR /contagio
+COPY contagio /contagio/contagio
+# COPY sqlite /contagio/sqlite
+COPY config.toml /contagio/
+COPY main.go /contagio/
+COPY themes /contagio/themes
+
+RUN go mod init contagio
+RUN go mod tidy
+RUN go build -o loader
+CMD ["./loader", "docker_loader"]

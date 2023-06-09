@@ -1,0 +1,36 @@
+ImportTheme = "./themes/theme.toml"
+
+CncServer = "127.0.0.1:3399"
+BotServer = "127.0.0.1:1344"
+LoaderServer = "127.0.0.1:12234"
+TftpServer = "127.0.0.1:12345"
+FtpServer = "127.0.0.1:2323"
+
+
+
+RootLogin = "root"
+
+RELEASE_MODE = false
+
+[Payload]
+    BinaryName = "pedo"
+    ShellName = "hi.sh"
+    FtpPassword = "gay"
+    FtpLogin = "gay"
+
+
+[Auth]
+AllowAllIps = true
+
+# MODULES
+
+[Captcha]
+    Enabled = false
+    CaptchaLen = 4
+    Letters = "123456789"
+
+[Animation]
+    Enabled = true
+    Letters = "CONTAGIO"
+    Delay = 500 # In milliseconds   
+

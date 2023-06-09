@@ -1,0 +1,75 @@
+
+[Logs]
+NewClientConnected = true
+NewClientConnectedFormat = "{blue}[Contagio] New Connection\n{white}Login: {login}\nIp: {ip}\nPort: {port}\nDate: {date}"
+
+
+
+[CNC]
+CmdPrompt = "\n\r{custom(fg=97 bg=47 fgstyle=1)}{login} {custom(fg=34 fgstyle=1)} ● boatnet {reset} {white} ➤➤ "
+
+Banner = ["""
+\r{blue}                                         s\r                
+\r                                        :8\r               
+\r                 u.      u.    u.      .88\r                
+\r      .    ...ue888b   x@88k u@88c.   :888ooo       u\r     
+\r .udR88N   888R Y888r ^"8888""8888" -*8888888    us888u.\r  
+\r<888'888k  888R I888>   8888  888R    8888    .@88 "8888"\r 
+\r9888 'Y"   888R I888>   {white}8888  888R    8888    9888  9888\r  
+\r9888       888R I888>   8888  888R    8888    9888  9888\r  
+\r9888      u8888cJ888    8888  888R   .8888Lu= 9888  9888\r  
+\r?8888u../  "*888*P"    "*88*" 8888"  ^%888*   9888  9888\r  
+\r "8888P'     'Y"         ""   'Y"      'Y"    "888*""888"\r 
+\r   "P'                                         ^Y"   ^Y'\r  
+\r
+"""]
+
+
+
+HelpCommand = "{blue}{command}{red}: {white}{description}"
+
+MethodsCommand = "{blue}{name}{red}: {white} {description}"
+
+CustomMethodsEnabled = false 
+CustomMethods = ["""
+     methods
+"""]
+
+CustomHelpEnabled = false
+CustomHelp = ["""
+help
+"""
+]
+
+
+BotCount = "{blue} {bots} {white}"
+NoBotsConnectedError = "{blue}No bots connected :(\r"
+CommandSent = "Command sent to {bots} bots"
+
+UnknownCommandError = "{blue}Unknown command{white}"
+InvalidCommandSyntaxError = "{blue}{syntax}\r\nExample:\r\n{example}\r"
+
+
+CommandExecuted = "{blue}Command executed successfully{white}"
+CommandInvalidSyntax = "{blue}{syntax}\r\nExample:\r\n{example}\r"
+
+
+# {login}
+# {cpu}
+# {memory}
+# {animation}
+# {bots}
+
+Title = "Bots: {bots} | {animation}"
+
+
+[Auth]
+
+LoginPrompt = "{blue}contagio {white}Network\r\n\n{blue}Enter Login {white} ➢ "
+PasswordPrompt = "{blue}Enter pass plssss {white} ➢ "
+AuthError = "{red}Invalid login or password!\n"
+
+CaptchaPrompt = "{blue}Enter captcha: {white}{code} ➢  "
+CaptchaError = "{red}Invalid Captcha\n"
+
+IpIsNotAllowedError = "\n\n{red}Ip is not allowed{white}\n\n"

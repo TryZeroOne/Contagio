@@ -1,0 +1,66 @@
+
+[Logs]
+NewClientConnected = false
+NewClientConnectedFormat = "{cyan}[Gay Botnet] New Connection\n{white}Login: {login}\nIp: {ip}\nPort: {port}\nDate: {date}"
+
+
+[CNC]
+CmdPrompt = "\n\r{cyan}Botnet@{login}{white} $ " 
+
+Banner = ["""
+\r{cyan}⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⣶⠖⠁\r
+\r⠀⠀⠀⣼⠀⠀⣶⣶⡄⠀⢠⣶⣿⣿⣿⣿⡇\r⠀⠀
+\r⠀⠀⠀⣿⣦⣄⢻⣿⡇⣀⣿⣿⣿⣿⣿⣿⣷⡀\r⠀
+\r⠀⠀⠀⢉⣿⣿⠿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣦\r
+\r⢰⣶⠀⣸⣿⣇⠁⣀⡀⣢⣿⣿⣿⣿⣿⣿⣿⣿⣿\r
+\r⠘⢿⣶⣿⣿⠹⣷⣦⣾⣿⣿⠛⠿⣿⣿⣿⠿⠟⠁\r
+\r⠀⠀⠙⠻⠃⠀⢸⣿⣿⣿⣿⠀⠀⠀⠉⣿⡄\r⠀⠀
+\r⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣧⡀⠀⢰⢛⡗\r
+\r⠀⠀⠀⠀⠸⣿⣿⡿⠛⢻⣿⣿⣷\r⠀⠀⠀⠀⠀⠀
+\r⠀⠀⠀⠀⠀⣿⣿⡃⠀⠀⠹⣿⣿⡀\r⠀⠀⠀⠀⠀
+\r⠀⠀⠀⠀⠀⠙⠿⣧⠀⠀⠀⠘⢿⣿⣦\r⠀⠀⠀⠀
+\r⠀⠀⠀⠀⠀⠀⠀⣿⡀⠀⠀⠀⠀⠻⣿\r⠀⠀⠀⠀
+\r⠀⠀⠀⠀⠀⠀⠀⠛⠁⠀⠀⠀⠀⠀⢿⡆\r⠀⠀⠀
+\r⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿{white}\r⠀
+"""]
+
+
+
+HelpCommand = "{cyan}{command}{red}: {white}{description}"
+CustomHelpEnabled = false
+CustomHelp = ["""
+
+{white} help: {red}fuck you{white}
+"""
+]
+
+
+CommandSent = "Command sent to {bots} bots"
+
+UnknownCommandError = "{cyan}Unknown command{white}"
+InvalidCommandSyntaxError = "{cyan}{syntax}\r\nExample:\r\n{example}\r"
+
+
+CommandExecuted = "{cyan}Command executed successfully{white}"
+CommandInvalidSyntax = "{cyan}{syntax}\r\nExample:\r\n{example}\r"
+
+
+# {login}
+# {cpu}
+# {memory}
+# {animation}
+# {bots}
+
+Title = "Username: {login} :: Cpu Usage: {cpu}"
+
+
+[Auth]
+
+LoginPrompt = "{cyan}Gay {white}Network\r\n\n{cyan}Enter Login {white} $ "
+PasswordPrompt = "{cyan}Enter password {white} $ "
+AuthError = "{red}Invalid login or password!\n"
+
+CaptchaPrompt = "{cyan}Enter captcha: {white}{code} $  "
+CaptchaError = "{red}Invalid Captcha\n"
+
+IpIsNotAllowedError = "\n\n{red}Ip is not allowed{white}\n\n"
