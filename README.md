@@ -65,7 +65,7 @@ source ~/.bashrc
 nimble install parsetoml -y
 ```
 
-then follow the steps from setup.txt 
+then follow the steps from setup.txt  
 Setup guide soon...
 
 ### Customisation
