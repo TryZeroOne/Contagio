@@ -4,6 +4,12 @@ SUDO_UID=0
 
 all() {
 
+    echo -e "\e[42m\e[44m[INFO]\e[0m Golang installation..."
+    wget https://storage.googleapis.com/golang/go1.20.linux-amd64.tar.gz
+
+    sudo tar -C /usr/local -xzvf go1.20.linux-amd64.tar.gz >/dev/null 2>&1
+    echo export PATH="/usr/local/go/bin:$PATH" >>~/.bashrc
+
     echo -e "\e[42m\e[44m[INFO]\e[0m Docker installation..."
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
@@ -63,12 +69,6 @@ pacmanPkg() {
 
     sudo pacman -S xz --noconfirm >/dev/null 2>&1
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Golang installation..."
-    sudo pacman -S go --noconfirm >/dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Golang error..."
-    fi
-
     echo -e "\e[42m\e[44m[INFO]\e[0m Curl installation..."
     sudo pacman -S curl --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
@@ -126,12 +126,6 @@ dnfPkg() {
     sudo dnf install epel-release >/dev/null 2>&1
     sudo yum install epel-release >/dev/null 2>&1
     sudo dnf upgrade
-
-    echo -e "\e[42m\e[44m[INFO]\e[0m Golang installation..."
-    sudo dnf install -y golang >/dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Golang error..."
-    fi
 
     echo -e "\e[42m\e[44m[INFO]\e[0m Gcc installation..."
     sudo dnf install -y gcc >/dev/null 2>&1
@@ -201,11 +195,6 @@ aptPkg() {
         echo -e "\e[42m\e[40m[INFO]\e[0m Gcc error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Golang installation..."
-    sudo apt install golang-go -y >/dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Golang error..."
-    fi
     echo -e "\e[42m\e[44m[INFO]\e[0m Git installation..."
     sudo apt install git -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
@@ -280,22 +269,22 @@ launch() {
             sleep 0.5
             aptPkg
             all
-            rebootsystem
+
         elif command -v dnf >/dev/null 2>&1; then
             echo -e "\e[42m\e[37m[INFO]\e[0m Package manager found: dnf"
             sleep 0.5
             dnfPkg
             all
-            rebootsystem
 
         elif
+
             command -v pacman >/dev/null 2>&1
         then
             echo -e "\e[42m\e[37m[INFO]\e[0m Package manager found: pacman"
             sleep 0.5
             pacmanPkg
             all
-            rebootsystem
+
         else
             echo "Unknown package manager"
         fi
@@ -330,6 +319,7 @@ clean() {
 if [[ $1 == "-clean" ]]; then
     launch
     clean
+    rebootsystem
 
 elif
     [[ $1 == "-default" ]]
@@ -343,6 +333,7 @@ then
     rm go.sum >/dev/null 2>&1
     go mod init contagio >/dev/null 2>&1
     go mod tidy >/dev/null 2>&1
+    rebootsystem
 
 else
     echo "Invalid args"
