@@ -61,6 +61,9 @@ Args:
 
 
 ```
+echo export PATH=/root/.nimble/bin:$PATH >> ~/.bashrc
+echo export PATH="/usr/local/go/bin:$PATH" >> ~/.bashrc
+
 source ~/.bashrc 
 nimble install parsetoml -y
 ```
