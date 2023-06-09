@@ -9,6 +9,11 @@ help:
 	@echo "make u"
 	@echo "make d"
 
+
+launch_docker:
+	nim c -d:quiet --hints:off docker/docker.nim
+	./docker/docker cbl
+	@rm docker/docker
 ubuntu:
 	docker build -f tests/ubuntu.dockerfile -t ubuntu .
 	docker run -it ubuntu
@@ -30,11 +35,6 @@ payload:
 	./scripts/payload 
 	@rm scripts/payload
 
-docker:
-	nim c -d:quiet --hints:off docker/docker.nim
-	
-	./docker/docker cbl
-	@rm docker/docker
 e:
 	cd enc; go run .
 clear: 
