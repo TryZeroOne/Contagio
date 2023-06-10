@@ -35,7 +35,7 @@ type Config struct {
 		HelpCommand string
 		CmdPrompt   string
 
-		MethodsCommand       string
+		MethodsList          string
 		CustomMethods        []string
 		CustomMethodsEnabled bool
 

