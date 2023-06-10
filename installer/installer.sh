@@ -274,7 +274,6 @@ launch() {
             all
 
         elif
-
             command -v pacman >/dev/null 2>&1
         then
             echo -e "\e[42m\e[37m[INFO]\e[0m Package manager found: pacman"
@@ -283,7 +282,8 @@ launch() {
             all
 
         else
-            echo "Unknown package manager"
+            echo "$ERROR Unknown package manager"
+            exit
         fi
         ;;
     *)
@@ -298,16 +298,12 @@ clean() {
     cd Contagio
     rm -rf themes config.toml assets sqlite tests README.md .gitignore setup.txt go.mod go.sum installer
     touch config.toml
-    go mod init contagio
-    go mod tidy
 }
 
 default() {
     echo -e "$INFO Contagio setup..."
     git clone https://github.com/TryZeroOne/Contagio >/dev/null 2>&1
     rm -rf installer go.mod go.sum
-    go mod init contagio
-    go mod tidy
 }
 
 if [[ $1 == "-clean" ]]; then
