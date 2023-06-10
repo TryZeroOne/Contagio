@@ -1,31 +1,32 @@
 #!/bin/bash
-PkgManager=''
 SUDO_UID=0
+INFO="\e[42m\e[44m[INFO]\e[0m"
+ERROR="\e[42m\e[40m[INFO]\e[0m"
 
 all() {
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Golang installation..."
+    echo -e "$INFO Golang installation..."
     wget https://storage.googleapis.com/golang/go1.20.linux-amd64.tar.gz
 
     sudo tar -C /usr/local -xzvf go1.20.linux-amd64.tar.gz >/dev/null 2>&1
-    echo export PATH="/usr/local/go/bin:$PATH" >>~/.bashrc
+    echo 'export PATH="/usr/local/go/bin:$PATH"' >>~/.bashrc
+    echo 'export GOPATH=$HOME/go' >>~/.bashrc
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Docker installation..."
+    echo -e "$INFO Docker installation..."
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
     sudo groupadd docker >/dev/null 2>&1
     sudo usermod -aG docker $USER >/dev/null 2>&1
     systemctl start docker
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Nim installation..."
+    echo -e "$INFO Nim installation..."
     curl https://nim-lang.org/choosenim/init.sh -sSf | sh
     sleep 1
 
-    echo export "PATH=$HOME/.nimble/bin:$PATH" >>~/.bashrc
+    echo 'export PATH=$HOME/.nimble/bin:$PATH' >>~/.bashrc
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Garble installation..."
-    echo export "PATH="$PATH:$(go env GOPATH)/bin"" >>~/.bashrc
-    go install mvdan.cc/garble@latest
+    echo -e "$INFO Garble installation..."
+    echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >>~/.bashrc
 
     rm -rf assets >/dev/null 2>&1
     rm -rf temp >/dev/null 2>&1
@@ -34,7 +35,7 @@ all() {
     pip3 install pycryptodome >/dev/null 2>&1
 
     cd temp >/dev/null 2>&1
-    echo -e "\e[42m\e[44m[INFO]\e[0m Upx installation..."
+    echo -e "$INFO Upx installation..."
     wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz >/dev/null 2>&1
     tar -xvf upx-4.0.2-amd64_linux.tar.xz >/dev/null 2>&1
 
@@ -47,211 +48,207 @@ all() {
 }
 
 pacmanPkg() {
-    echo -e "\e[42m\e[44m[INFO]\e[0m Updating..."
+    echo -e "$INFO Updating..."
     pacman -S sudo --noconfirm >/dev/null 2>&1
     sudo pacman -Fy --noconfirm
     sudo pacman -Syu --noconfirm
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Snap installation..."
+    echo -e "$INFO Snap installation..."
     sudo pacman -S snapd --noconfirm >/dev/null 2>&1
     sudo systemctl enable --now snapd.socket
     sudo ln -s /var/lib/snapd/snap /snap >/dev/null 2>&1
 
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Snap error..."
+        echo -e "$ERROR Snap error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Gcc installation..."
+    echo -e "$INFO Gcc installation..."
     sudo pacman -S gcc --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Snap error..."
+        echo -e "$ERROR Snap error..."
     fi
 
     sudo pacman -S xz --noconfirm >/dev/null 2>&1
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Curl installation..."
+    echo -e "$INFO Curl installation..."
     sudo pacman -S curl --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Curl error..."
+        echo -e "$ERROR Curl error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Git installation..."
+    echo -e "$INFO Git installation..."
     sudo pacman -S git --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Git error..."
+        echo -e "$ERROR Git error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Screen installation..."
+    echo -e "$INFO Screen installation..."
     sudo pacman -S screen --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Screen error..."
+        echo -e "$ERROR Screen error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Sqlite3 installation..."
+    echo -e "$INFO Sqlite3 installation..."
     sudo pacman -S sqlite3 --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Sqlite3 error..."
+        echo -e "$ERROR Sqlite3 error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Python3 installation..."
+    echo -e "$INFO Python3 installation..."
     sudo pacman -S python3 --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Python3 error..."
+        echo -e "$ERROR Python3 error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Wget installation..."
+    echo -e "$INFO Wget installation..."
     sudo pacman -S wget --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Wget error..."
+        echo -e "$ERROR Wget error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Tar installation..."
+    echo -e "$INFO Tar installation..."
     sudo pacman -S tar --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Tar error..."
+        echo -e "$ERROR Tar error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Nano installation..."
+    echo -e "$INFO Nano installation..."
     sudo pacman -S nano --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Nano error..."
+        echo -e "$ERROR Nano error..."
     fi
 
 }
 
 dnfPkg() {
-    echo -e "\e[42m\e[44m[INFO]\e[0m Updating..."
+    echo -e "$INFO Updating..."
     sudo dnf update -y
     sudo dnf install -y epel-release >/dev/null 2>&1
     sudo dnf install epel-release >/dev/null 2>&1
     sudo yum install epel-release >/dev/null 2>&1
     sudo dnf upgrade
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Gcc installation..."
+    echo -e "$INFO Gcc installation..."
     sudo dnf install -y gcc >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Gcc error..."
+        echo -e "$ERROR Gcc error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Curl installation..."
+    echo -e "$INFO Curl installation..."
     sudo dnf install -y curl >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Curl error..."
+        echo -e "$ERROR Curl error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Git installation..."
+    echo -e "$INFO Git installation..."
     sudo dnf install -y git >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Git error..."
+        echo -e "$ERROR Git error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Screen installation..."
+    echo -e "$INFO Screen installation..."
     sudo dnf install -y screen >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Screen error..."
+        echo -e "$ERROR Screen error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Sqlite3 installation..."
+    echo -e "$INFO Sqlite3 installation..."
     sudo dnf install -y sqlite-devel >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Sqlite3 error..."
+        echo -e "$ERROR Sqlite3 error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Python3 installation..."
+    echo -e "$INFO Python3 installation..."
     sudo dnf install -y python3 >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Python3 error..."
+        echo -e "$ERROR Python3 error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Wget installation..."
+    echo -e "$INFO Wget installation..."
     sudo dnf install -y wget >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Wget error..."
+        echo -e "$ERROR Wget error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Tar installation..."
+    echo -e "$INFO Tar installation..."
     sudo dnf install -y tar >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Tar error..."
+        echo -e "$ERROR Tar error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Nano installation..."
+    echo -e "$INFO Nano installation..."
     sudo dnf install -y nano >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Nano error..."
+        echo -e "$ERROR Nano error..."
     fi
 
     sudo dnf install -y xz >/dev/null 2>&1
 }
 
 aptPkg() {
-    echo -e "\e[42m\e[44m[INFO]\e[0m Updating..."
+    echo -e "$INFO Updating..."
     sudo apt-get upgrade -y
     sudo apt-get update -y
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Gcc installation..."
+    echo -e "$INFO Gcc installation..."
     sudo apt install gcc -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Gcc error..."
+        echo -e "$ERROR Gcc error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Git installation..."
+    echo -e "$INFO Git installation..."
     sudo apt install git -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Git error..."
+        echo -e "$ERROR Git error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Curl installation..."
+    echo -e "$INFO Make installation..."
+    sudo apt install make -y >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR Make error..."
+    fi
+    echo -e "$INFO Curl installation..."
     sudo apt install curl -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Curl error..."
+        echo -e "$ERROR Curl error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Screen installation..."
+    echo -e "$INFO Screen installation..."
     sudo apt install screen -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Screen error..."
+        echo -e "$ERROR Screen error..."
     fi
-    echo -e "\e[42m\e[44m[INFO]\e[0m Sqlite3 installation..."
+    echo -e "$INFO Sqlite3 installation..."
     sudo apt install sqlite3 -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Sqlite3 error..."
+        echo -e "$ERROR Sqlite3 error..."
     fi
 
     systemctl restart systemd-logind.service -y >/dev/null 2>&1
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Python3 installation..."
+    echo -e "$INFO Python3 installation..."
     sudo apt install python3 -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Python3 error..."
+        echo -e "$ERROR Python3 error..."
     fi
-    echo -e "\e[42m\e[44m[INFO]\e[0m Wget installation..."
+    echo -e "$INFO Wget installation..."
     sudo apt install wget -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Wget error..."
+        echo -e "$ERROR Wget error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Tar installation..."
+    echo -e "$INFO Tar installation..."
     sudo apt install tar -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Tar error..."
+        echo -e "$ERROR Tar error..."
     fi
 
-    echo -e "\e[42m\e[44m[INFO]\e[0m Nano installation..."
+    echo -e "$INFO Nano installation..."
     sudo apt install nano -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "\e[42m\e[40m[INFO]\e[0m Nano error..."
+        echo -e "$ERROR Nano error..."
     fi
 
-}
-
-rebootsystem() {
-    echo "Reboot is required. Reboot? (y/n)"
-    read answer
-    if [ "$answer" == "y" ]; then
-        sleep 0.5
-        sudo reboot
-    fi
 }
 
 launch() {
@@ -296,45 +293,33 @@ launch() {
 }
 
 clean() {
-    echo -e "\e[42m\e[44m[INFO]\e[0m Contagio setup..."
-    git clone https://github.com/TryZeroOne/Contagio
-    cd Contagio >/dev/null 2>&1
-    rm -rf themes >/dev/null 2>&1
-    rm config.toml >/dev/null 2>&1
-    touch config.toml >/dev/null 2>&1
-    rm -rf assets >/dev/null 2>&1
-    rm -rf sqlite >/dev/null 2>&1
-    rm -rf tests >/dev/null 2>&1
-    rm README.md >/dev/null 2>&1
-    rm .gitignore >/dev/null 2>&1
-    rm setup.txt >/dev/null 2>&1
-    rm -rf installer
-    rm go.mod >/dev/null 2>&1
-    rm go.sum >/dev/null 2>&1
-    go mod init contagio >/dev/null 2>&1
-    go mod tidy >/dev/null 2>&1
+    echo -e "$INFO Contagio setup..."
+    git clone https://github.com/TryZeroOne/Contagio >/dev/null 2>&1
+    cd Contagio
+    rm -rf themes config.toml assets sqlite tests README.md .gitignore setup.txt go.mod go.sum installer
+    touch config.toml
+    go mod init contagio
+    go mod tidy
+}
 
+default() {
+    echo -e "$INFO Contagio setup..."
+    git clone https://github.com/TryZeroOne/Contagio >/dev/null 2>&1
+    rm -rf installer go.mod go.sum
+    go mod init contagio
+    go mod tidy
 }
 
 if [[ $1 == "-clean" ]]; then
     launch
     clean
-    rebootsystem
 
-elif
-    [[ $1 == "-default" ]]
-then
+elif [[ $1 == "-default" ]]; then
     launch
-    echo -e "\e[42m\e[44m[INFO]\e[0m Contagio setup..."
-
-    git clone https://github.com/TryZeroOne/Contagio
-    rm -rf installer
-    rm go.mod >/dev/null 2>&1
-    rm go.sum >/dev/null 2>&1
-    go mod init contagio >/dev/null 2>&1
-    go mod tidy >/dev/null 2>&1
-    rebootsystem
-
+    default
 else
-    echo "Invalid args"
+    echo """
+    sudo bash installer.sh [-default/-clean]
+    see https://github.com/TryZeroOne/Contagio#installation
+    """
 fi
