@@ -64,8 +64,10 @@ Args:
 source ~/.bashrc 
 go install mvdan.cc/garble@latest
 nimble install parsetoml -y
+cd Contagio 
+go mod init contagio
+go mod tidy
 ```
-
 then follow the steps from setup.txt  
 Setup guide soon...
 
