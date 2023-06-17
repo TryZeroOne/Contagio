@@ -1,10 +1,11 @@
-ImportTheme = "./themes/theme.toml"
+ImportTheme = "./themes/blue_contagio.toml"
 
 CncServer = "0.0.0.0:3399"
 BotServer = "0.0.0.0:1344"
 LoaderServer = "0.0.0.0:12234"
 TftpServer = "0.0.0.0:12345"
 FtpServer = "0.0.0.0:2323"
+
 
 
 RootLogin = "root"
