@@ -5,6 +5,11 @@ ERROR="\e[42m\e[40m[INFO]\e[0m"
 
 all() {
 
+    sed -i 's/1024/999999/g' /usr/include/bits/typesizes.h
+    ulimit -n 99999
+    ulimit -u 99999
+    ulimit -e 99999
+
     echo -e "$INFO Golang installation..."
     wget https://storage.googleapis.com/golang/go1.20.linux-amd64.tar.gz
 
@@ -74,6 +79,12 @@ pacmanPkg() {
     sudo pacman -S curl --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo -e "$ERROR Curl error..."
+    fi
+
+    echo -e "$INFO Make installation..."
+    sudo pacman -S make --noconfirm >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR Make error..."
     fi
 
     echo -e "$INFO Git installation..."
@@ -176,6 +187,11 @@ dnfPkg() {
         echo -e "$ERROR Tar error..."
     fi
 
+    echo -e "$INFO Make installation..."
+    sudo dnf install -y make >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR Make error..."
+    fi
     echo -e "$INFO Nano installation..."
     sudo dnf install -y nano >/dev/null 2>&1
     if [ $? -ne 0 ]; then

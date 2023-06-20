@@ -185,7 +185,7 @@ func Bots(command string, c *Connection) {
 		return
 	}
 
-	bc := bot_server.GetBots()
+	tot, bc := bot_server.GetBots()
 
 	if bc == "" {
 		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.NoBotsConnectedError)))
@@ -193,6 +193,7 @@ func Bots(command string, c *Connection) {
 	}
 
 	botsc := strings.ReplaceAll(c.config.Cnc.BotCount, "{bots}", bc)
+	botsc = strings.ReplaceAll(botsc, "{total}", strconv.Itoa(tot))
 
 	c.conn.Write([]byte(GeneratePrompt(botsc)))
 }

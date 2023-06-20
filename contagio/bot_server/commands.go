@@ -90,7 +90,7 @@ func reverseArrayBytes(input []byte) []byte {
 	return res
 }
 
-func GetBots() string {
+func GetBots() (int, string) {
 
 	var res string
 
@@ -102,8 +102,8 @@ func GetBots() string {
 	})
 
 	for arch, count := range resmap {
-		res += fmt.Sprintf("%s: %d\r\n", arch, count)
+		res += fmt.Sprintf("%s: %d\n\r", arch, count)
 	}
 
-	return string(bytes.TrimSuffix([]byte(res), []byte{10}))
+	return BotCount, string(bytes.TrimSuffix([]byte(res), []byte{10, 13}))
 }

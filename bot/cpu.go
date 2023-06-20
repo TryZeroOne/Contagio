@@ -45,7 +45,10 @@ func GetCPUUsage() (idle, total uint64) {
 }
 
 func CpuMonitor() {
+	defer methods.Catch()
+
 	go func() {
+		defer methods.Catch()
 
 		if runtime.NumCPU() == 0 {
 			return

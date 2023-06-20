@@ -2,7 +2,7 @@ FROM fedora:latest
 
 WORKDIR /instlr
 
-COPY ./scripts/installer.sh /instlr/
+COPY ./installer/installer.sh /instlr/
 
 # COPY contagio /contagio/contagio
 # COPY sqlite /contagio/sqlite

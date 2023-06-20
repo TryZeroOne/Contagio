@@ -34,7 +34,6 @@ payload:
 	nim c -d:quiet --hints:off scripts/payload.nim 
 	./scripts/payload 
 	@rm scripts/payload
-
 e:
 	cd enc; go run .
 clear: 
