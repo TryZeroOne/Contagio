@@ -44,18 +44,18 @@ func TcpMixMethod(ctx context.Context, ipaddr string, _port string) {
 
 			rand.NewSource(time.Now().UnixNano())
 
-			packet := utils.BuildPacket(rand.Intn(3-1)+1, rand.Intn(7<<10-3<<10)+3<<10)
+			payload := utils.BuildPayload(rand.Intn(3-1)+1, rand.Intn(7<<10-3<<10)+3<<10)
 
-			go tcpmix(net.ParseIP(ipaddr).To4(), port, packet)
-			go tcpmix(net.ParseIP(ipaddr).To4(), port, packet)
-			go tcpmix(net.ParseIP(ipaddr).To4(), port, packet)
+			go tcpmix(net.ParseIP(ipaddr).To4(), port, payload)
+			go tcpmix(net.ParseIP(ipaddr).To4(), port, payload)
+			go tcpmix(net.ParseIP(ipaddr).To4(), port, payload)
 
 			time.Sleep(150 * time.Millisecond)
 		}
 	}
 }
 
-func tcpmix(ip net.IP, port int, packet []byte) {
+func tcpmix(ip net.IP, port int, payload []byte) {
 
 	defer Catch()
 
@@ -77,7 +77,7 @@ func tcpmix(ip net.IP, port int, packet []byte) {
 	syscall.SetNonblock(fd, true)
 
 	for i := 0; i < 20; i++ {
-		syscall.Sendto(fd, packet, 0, &addr)
+		syscall.Sendto(fd, payload, 0, &addr)
 		time.Sleep(30 * time.Millisecond)
 	}
 }

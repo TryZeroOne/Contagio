@@ -6,13 +6,20 @@ import (
 	"contagio/contagio/cnc/database"
 	"contagio/contagio/config"
 	loader "contagio/contagio/loader_server"
+	"fmt"
 	"os"
+	"runtime"
 	"sync"
 )
 
 var wg sync.WaitGroup
 
 func main() {
+
+	if runtime.GOOS != "linux" {
+		fmt.Println("Stupid kiddo run this on linux...")
+		return
+	}
 
 	c := config.ReadConfig(&wg)
 	if c == nil {

@@ -179,6 +179,8 @@ func signals(pid uintptr) {
 }
 
 func initbot() *BotInfo {
+	defer methods.Catch()
+
 	var arch string
 
 	if runtime.GOOS == "" {

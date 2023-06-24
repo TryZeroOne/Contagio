@@ -1,12 +1,25 @@
 
 [Logs]
-NewClientConnected = true
-NewClientConnectedFormat = "{blue}[Contagio] New Connection\n{white}Login: {login}\nIp: {ip}\nPort: {port}\nDate: {date}"
+
+
+NewClientConnectedTerminal = "{blue}[Contagio] New connection\n{white}Login: {login}\nIp: {ip}\nPort: {port}\nDate: {date}" 
+
+NewClientConnectedTelegram = "New Connection\n***Login***: `{login}`\n***IP:*** `{ip}`\n***Port***: `{port}`\n***Date***: `{date}`"
+
+NewClientConnectedFile = "--------------------------------\nNew connection\nIP: {ip}\nLogin: {login}\nDate: {date}\n"
+
+
+NewAttackStartedTerminal = "{blue}[Contagio] New attack started \n{white}Login: {login}\nIp: {ip}\nPort: {port}\nDate: {date}\nTarget: {target}"
+
+
+NewAttackStartedFile = "--------------------------------\nNew attack started\nIP: {ip}\nLogin: {login}\nDate: {date}\nMethod: {method}\nTarget: {target}\nPort: {target_port}\nDuration: {duration}\n"
+
+NewAttackStartedTelegram ="New attack started\n\n***_User Info_***\n***Login***: `{login}`\n***IP:*** `{ip}`\n***Port***: `{port}`\n***Date***: `{date}`\n\n***_Target Info_***\n***Target***: `{target}`\n***Port***: `{target_port}`\n***Duration***: `{duration}`\n***Method***: `{method}`"
 
 
 
 [CNC]
-CmdPrompt = "\n\r{custom(fg=97 bg=47 fgstyle=1)}{login} {custom(fg=34 fgstyle=1)} ● contagio {reset} {white} ➤➤ "
+CmdPrompt = "\n\r{custom(fg=97 bg=47 fgstyle=1)}{login} {custom(fg=34 fgstyle=1)}❄ contagio {reset} {white} ➤➤ "
 
 Banner = ["""
 \r{blue}                                         s\r                
@@ -60,13 +73,14 @@ CommandInvalidSyntax = "{blue}{syntax}\r\nExample:\r\n{example}\r"
 # {animation}
 # {bots}
 
-Title = "Bots: {bots} | {animation}"
+# {date} - custom module (config.toml -> [Modules.date])
+Title = "Bots: {bots} | Date: {date} | {animation} "
 
 
 [Auth]
 
-LoginPrompt = "{blue}contagio {white}Network\r\n\n{blue}Enter Login {white} ➢ "
-PasswordPrompt = "{blue}Enter pass plssss {white} ➢ "
+LoginPrompt = "{blue}Contagio {white}Network\r\n\n{blue}Enter Login {white} ➢ "
+PasswordPrompt = "{blue}Enter password {white} ➢ "
 AuthError = "{red}Invalid login or password!\n"
 
 CaptchaPrompt = "{blue}Enter captcha: {white}{code} ➢  "

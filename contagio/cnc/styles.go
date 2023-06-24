@@ -8,8 +8,6 @@ import (
 	"github.com/iskaa02/qalam/gradient"
 )
 
-type Attribute int
-
 const (
 	Black Attribute = iota + 90
 	Red
@@ -176,9 +174,7 @@ func (c *Connection) Cls() {
 func rainbow(text string) string {
 
 	re := regexp.MustCompile(`{rainbow\((.*?)\)}`)
-
 	matches := re.FindAllStringSubmatch(text, -1)
-
 	if matches == nil {
 		return text
 	}

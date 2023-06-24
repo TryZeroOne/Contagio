@@ -1,6 +1,9 @@
 bin/
 assets/
 todo
-README.md
+# README.md
 sqlite/database.db
 .fuck
+loader/
+update
+logs/

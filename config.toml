@@ -6,11 +6,25 @@ LoaderServer = "0.0.0.0:12234"
 TftpServer = "0.0.0.0:12345"
 FtpServer = "0.0.0.0:2323"
 
-
-
-RootLogin = "root"
+RootLogin = "root" 
 
 RELEASE_MODE = false
+
+[Logs]
+TelegramBotToken = "" # telegram bot token (@BotFather)
+TelegramChatId = "" # telegram chat id (account id/chat id)
+
+
+SaveLogsInFile = true
+SendLogsInTelegram =true
+PrintLogsInTerminal = true 
+
+NewClientConnectedLog = true
+NewAttackStartedLog = true
+
+# if SaveLogsInFile = true
+NewClientConnectedFileName = "logs/connections.txt" 
+NewAttackStartedFileName = "logs/attacks.txt"
 
 [Payload]
     BinaryName = "pedo"
@@ -34,3 +48,5 @@ AllowAllIps = true
     Letters = "CONTAGIO"
     Delay = 500 # In milliseconds   
 
+[Modules.date] # custom module
+    Exec="date +%T"

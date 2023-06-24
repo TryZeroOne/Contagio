@@ -28,8 +28,23 @@ type Config struct {
 
 	RootLogin string
 	Logs      struct {
-		NewClientConnected       bool
-		NewClientConnectedFormat string
+		TelegramBotToken           string
+		TelegramChatId             string
+		NewClientConnectedTelegram string
+		SaveLogsInFile             bool
+		PrintLogsInTerminal        bool
+		SendLogsInTelegram         bool
+
+		NewClientConnectedFile     string
+		NewClientConnectedFileName string
+		NewClientConnectedLog      bool
+		NewClientConnectedTerminal string
+
+		NewAttackStartedLog      bool
+		NewAttackStartedFileName string
+		NewAttackStartedTerminal string
+		NewAttackStartedFile     string
+		NewAttackStartedTelegram string
 	}
 	Cnc struct {
 		HelpCommand string

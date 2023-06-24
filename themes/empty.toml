@@ -1,0 +1,65 @@
+
+[Logs]
+
+
+NewClientConnectedTerminal = ""
+NewClientConnectedTelegram = ""
+NewClientConnectedFile =""
+
+
+NewAttackStartedTerminal = ""
+NewAttackStartedFile = ""
+NewAttackStartedTelegram =""
+
+
+[CNC]
+CmdPrompt = ""
+
+Banner = ["""
+
+"""]
+
+
+
+HelpCommand = ""
+
+MethodsCommand =""
+
+CustomMethodsEnabled = false 
+CustomMethods = ["""
+"""]
+
+CustomHelpEnabled = false
+CustomHelp = ["""
+"""
+]
+
+
+BotCount = ""
+NoBotsConnectedError = ""
+
+CommandSent = ""
+
+UnknownCommandError = ""
+InvalidCommandSyntaxError = ""
+
+
+CommandExecuted = ""
+
+CommandInvalidSyntax = ""
+
+
+Title = ""
+
+
+[Auth]
+
+LoginPrompt = ""
+PasswordPrompt = ""
+AuthError = ""
+
+CaptchaPrompt = ""
+
+CaptchaError = ""
+
+IpIsNotAllowedError = ""

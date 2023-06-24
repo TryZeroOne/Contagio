@@ -68,7 +68,7 @@ func GetArrayVal(arr []string) string {
 
 // 1 - null
 // 2 - default (random bytes)
-func BuildPacket(p, size int) (packet []byte) {
+func BuildPayload(p, size int) (packet []byte) {
 
 	rand.NewSource(time.Now().UnixNano())
 

@@ -313,7 +313,10 @@ clean() {
     git clone https://github.com/TryZeroOne/Contagio >/dev/null 2>&1
     cd Contagio
     rm -rf themes config.toml assets sqlite tests README.md .gitignore setup.txt go.mod go.sum installer
-    touch config.toml
+
+    mkdir themes
+    curl https://raw.githubusercontent.com/TryZeroOne/Contagio/main/installer/empty_config.toml -o config.toml
+    curl https://raw.githubusercontent.com/TryZeroOne/Contagio/main/themes/empty.toml -o themes/theme.toml
 }
 
 default() {
