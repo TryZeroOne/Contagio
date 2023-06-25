@@ -50,3 +50,6 @@ AllowAllIps = true
 
 [Modules.date] # custom module
     Exec="date +%T"
+
+# [Modules.Disk]
+#     Exec = "bash modules/disk.bash"

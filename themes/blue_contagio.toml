@@ -74,7 +74,7 @@ CommandInvalidSyntax = "{blue}{syntax}\r\nExample:\r\n{example}\r"
 # {bots}
 
 # {date} - custom module (config.toml -> [Modules.date])
-Title = "Bots: {bots} | Date: {date} | {animation} "
+Title = "Bots: {bots} | {animation} "
 
 
 [Auth]

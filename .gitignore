@@ -7,3 +7,4 @@ sqlite/database.db
 loader/
 update
 logs/
+modules/
