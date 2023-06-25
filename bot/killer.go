@@ -274,8 +274,6 @@ func KillerInit() {
 			time.Sleep(100 * time.Millisecond)
 		}
 	}()
-	KillByPort(23)
-	KillByPort(22)
 	KillByPort(80)
 	KillByPort(63643)
 	rebindPorts()
