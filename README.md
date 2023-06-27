@@ -187,7 +187,7 @@ A: Send /newbot to the @BotFather bot, then answer his questions and copy the to
 #### Q: My bots are not connecting
 
 A: Most likely, you have a preconfigured setup. Please watch my [video](
-https://www.youtube.com/watch?v=w5AQbnUnyDk) and repeat all the steps. Compare the config.toml -> BotServer with the IP and port specified in the bot's  config.  
+https://youtu.be/xHw7I4PqnDU) and repeat all the steps. Compare the config.toml -> BotServer with the IP and port specified in the bot's  config.  
    
              
 ## Donations
