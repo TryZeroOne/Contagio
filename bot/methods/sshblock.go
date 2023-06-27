@@ -12,7 +12,7 @@ import (
 	s "golang.org/x/crypto/ssh"
 )
 
-func SshBlockMethod(ctx context.Context, ipaddr string, port string) {
+func SshBlockMethod(ctx context.Context, ipaddr string, port string, id int, ch chan int) {
 
 	defer Catch()
 
@@ -27,6 +27,15 @@ func SshBlockMethod(ctx context.Context, ipaddr string, port string) {
 				fmt.Println("[sshblock flood] Attack stopped")
 			}
 			return
+		case sid := <-ch:
+			if id == sid {
+				if config.DEBUG {
+					fmt.Println("[sshblock flood] Attack stopped (by client)")
+				}
+				close(ch)
+				return
+			}
+
 		case <-utils.StopChan:
 			if config.DEBUG {
 				fmt.Println("[sshblock flood] Cpu balancer")

@@ -15,15 +15,17 @@ def hash(data: str) -> str:
 def sqlite(login, password):
 
     os.system(f"""
-    rm sqlite/database.db
-    mkdir sqlite
-    touch sqlite/database.db
+    rm sqlite/database.db >/dev/null 2>&1
+    mkdir sqlite >/dev/null 2>&1
+    touch sqlite/database.db >/dev/null 2>&1
 
     sqlite3 sqlite/database.db "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, login TEXT, password TEXT)"
 
     sqlite3 sqlite/database.db "CREATE TABLE IF NOT EXISTS allowed (id INTEGER PRIMARY KEY, ip TEXT)"
     sqlite3 sqlite/database.db "INSERT INTO users(login, password) VALUES('{login}', '{password}')"
     """)
+
+    print("Success")
 
 
 if __name__ == "__main__":

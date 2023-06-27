@@ -158,3 +158,33 @@ func checksum(data []byte) uint16 {
 
 	return uint16(^sum)
 }
+
+func (h *TCPHeader) Marshal() []byte {
+	defer Catch()
+
+	if h == nil {
+		return nil
+	}
+
+	hdrlen := 20 + len(h.Options)
+	b := make([]byte, hdrlen)
+
+	binary.BigEndian.PutUint16(b[0:2], h.SourcePort)
+	binary.BigEndian.PutUint16(b[2:4], h.DestinationPort)
+
+	binary.BigEndian.PutUint32(b[4:8], h.SequenceNumber)
+	binary.BigEndian.PutUint32(b[8:12], h.AckNumber)
+
+	b[12] = uint8(hdrlen / 4 << 4)
+	b[13] = uint8(h.Flags)
+
+	binary.BigEndian.PutUint16(b[14:16], uint16(h.WindowSize))
+	binary.BigEndian.PutUint16(b[16:18], uint16(h.Checksum))
+	binary.BigEndian.PutUint16(b[18:20], uint16(h.UrgentPointer))
+
+	if len(h.Options) > 0 {
+		copy(b[20:], h.Options)
+	}
+
+	return b
+}

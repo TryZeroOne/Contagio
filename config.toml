@@ -16,7 +16,7 @@ TelegramChatId = "" # telegram chat id (account id/chat id)
 
 
 SaveLogsInFile = true
-SendLogsInTelegram =true
+SendLogsInTelegram =false
 PrintLogsInTerminal = true 
 
 NewClientConnectedLog = true
@@ -51,5 +51,3 @@ AllowAllIps = true
 [Modules.date] # custom module
     Exec="date +%T"
 
-# [Modules.Disk]
-#     Exec = "bash modules/disk.bash"

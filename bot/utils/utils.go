@@ -10,6 +10,7 @@ import (
 )
 
 var StopChan = make(chan bool)
+var ClientStopChan = make(chan int)
 
 func RandomString(strlen int) string {
 	s1 := rand.NewSource(time.Now().UnixNano())

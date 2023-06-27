@@ -1,14 +1,18 @@
+.PHONY: d
+
 help:
 	@echo "Invalid args!"
-	@echo "make <args>"
+	@echo "make <u/d> <flags>"
+	@echo "u      - Build with upx"
+	@echo "d      - Default build"
 	@echo ""
-	@echo "u             |    Build with upx "
-	@echo "d             |    Standart build"
+	@echo "Flags:"
+	@echo "mt=true/false     - Multithreading (faster)"
+	@echo  "sleep=0           - Time to sleep (in seconds)"
 	@echo ""
 	@echo "Examples:"
+	@echo "make d mt=true sleep=5"
 	@echo "make u"
-	@echo "make d"
-
 
 launch_docker:
 	nim c -d:quiet --hints:off docker/docker.nim
@@ -39,7 +43,6 @@ e:
 clear: 
 	rm *.bin
 u:
-	bash scripts/build.sh upx
+	bash scripts/build.sh upx $(mt) $(sleep)
 d:
-	bash scripts/build.sh standart
-
+	bash scripts/build.sh default $(mt) $(sleep)

