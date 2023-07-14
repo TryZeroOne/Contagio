@@ -17,6 +17,16 @@ all() {
     echo 'export PATH="/usr/local/go/bin:$PATH"' >>~/.bashrc
     echo 'export GOPATH=$HOME/go' >>~/.bashrc
 
+    echo -e "$INFO Vlang installation..."
+
+    git clone --depth=1 https://github.com/vlang/v
+    cd v
+    make
+    # mv ../v/ /opt
+    ./v symlink 
+    cd ..
+    # cd ..
+
     echo -e "$INFO Docker installation..."
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
@@ -49,6 +59,7 @@ all() {
 
     cd ../../ >/dev/null 2>&1
 
+    rm -rf v
     rm -rf temp >/dev/null 2>&1
 }
 
@@ -91,6 +102,18 @@ pacmanPkg() {
     sudo pacman -S git --noconfirm >/dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo -e "$ERROR Git error..."
+    fi
+
+    echo -e "$INFO Tor installation..."
+    sudo pacman -S tor --noconfirm >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR Tor error..."
+    fi
+
+    echo -e "$INFO OpenSSL installation..."
+    sudo pacman -S openssl --noconfirm >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR OpenSSL error..."
     fi
 
     echo -e "$INFO Screen installation..."
@@ -157,6 +180,12 @@ dnfPkg() {
         echo -e "$ERROR Git error..."
     fi
 
+    echo -e "$INFO Tor installation..."
+    sudo dnf install -y tor >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR Tor error..."
+    fi
+
     echo -e "$INFO Screen installation..."
     sudo dnf install -y screen >/dev/null 2>&1
     if [ $? -ne 0 ]; then
@@ -179,6 +208,12 @@ dnfPkg() {
     sudo dnf install -y wget >/dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo -e "$ERROR Wget error..."
+    fi
+
+    echo -e "$INFO OpenSSL installation..."
+    sudo dnf install -y openssl >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR OpenSSL error..."
     fi
 
     echo -e "$INFO Tar installation..."
@@ -218,6 +253,12 @@ aptPkg() {
         echo -e "$ERROR Git error..."
     fi
 
+    echo -e "$INFO Tor installation..."
+    sudo apt install tor -y >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR Tor error..."
+    fi
+
     echo -e "$INFO Make installation..."
     sudo apt install make -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
@@ -227,6 +268,12 @@ aptPkg() {
     sudo apt install curl -y >/dev/null 2>&1
     if [ $? -ne 0 ]; then
         echo -e "$ERROR Curl error..."
+    fi
+
+    echo -e "$INFO OpenSSL installation..."
+    sudo apt install openssl -y >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo -e "$ERROR OpenSSL error..."
     fi
 
     echo -e "$INFO Screen installation..."
@@ -312,6 +359,9 @@ clean() {
     echo -e "$INFO Contagio setup..."
     git clone https://github.com/TryZeroOne/Contagio >/dev/null 2>&1
     cd Contagio
+    v installer/update.v -o cup
+    sudo cp cup /bin/
+
     rm -rf themes config.toml assets sqlite tests README.md .gitignore setup.txt go.mod go.sum installer
 
     mkdir themes
@@ -322,6 +372,9 @@ clean() {
 default() {
     echo -e "$INFO Contagio setup..."
     git clone https://github.com/TryZeroOne/Contagio >/dev/null 2>&1
+    cd Contagio
+    v installer/update.v -o cup
+    sudo cp cup /bin/
     rm -rf installer go.mod go.sum
 }
 

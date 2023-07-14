@@ -14,6 +14,10 @@ help:
 	@echo "make d mt=true sleep=5"
 	@echo "make u"
 
+
+test:
+	v run installer/update.v
+
 launch_docker:
 	nim c -d:quiet --hints:off docker/docker.nim
 	./docker/docker cbl

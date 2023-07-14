@@ -30,10 +30,8 @@ upxcompress() {
         echo ====================================
         echo "        [$current_cmd/$total_cmds] Compressing..."
         echo ====================================
-        execute_command "$cmd" &
-        sleep 10
+        execute_command "$cmd"
     done
-    wait
 
 }
 

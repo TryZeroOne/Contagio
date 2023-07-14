@@ -109,26 +109,26 @@ func ReadConfig(wg *sync.WaitGroup) *Config {
 
 	conf, err := os.ReadFile("./config.toml")
 	if err != nil {
-		fmt.Printf("Config error: %e", err)
+		fmt.Printf("Config error: %s", err)
 		return nil
 	}
 	_, err = toml.Decode(string(conf), &config)
 
 	if err != nil {
-		fmt.Printf("Config error: %e", err)
+		fmt.Printf("Config error: %s", err)
 		return nil
 	}
 
 	theme, err := os.ReadFile(config.ImportTheme)
 
 	if err != nil {
-		fmt.Printf("Config error: %e", err)
+		fmt.Printf("Config error: %s", err)
 		return nil
 	}
 	_, err = toml.Decode(string(theme), &config)
 
 	if err != nil {
-		fmt.Printf("Config error: %e", err)
+		fmt.Printf("Config error: %s", err)
 		return nil
 	}
 

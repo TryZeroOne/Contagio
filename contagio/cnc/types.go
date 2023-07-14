@@ -101,13 +101,13 @@ var CmdList = map[int]CommandsInfo{
 		function:    Methods,
 	},
 	6: {
-		Description: "Running",
+		Description: "View active attacks",
 		Name:        "running",
 		Uint8:       []byte{114, 117, 110, 110, 105, 110, 103},
 		function:    RunningCnc,
 	},
 	7: {
-		Description: "kill",
+		Description: "Stop the attack",
 		Name:        "kill",
 		Uint8:       []byte{107, 105, 108, 108},
 		function:    KillAttack,

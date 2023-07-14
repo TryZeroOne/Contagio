@@ -183,6 +183,7 @@ func Adduser(command string, c *Connection) {
 	var suc = GeneratePrompt(c.config.Cnc.CommandExecuted)
 
 	if c.login != c.config.RootLogin {
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.UnknownCommandError)))
 		return
 	}
 
@@ -206,6 +207,7 @@ func Bots(command string, c *Connection) {
 	defer Catch()
 
 	if c.login != c.config.RootLogin {
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.UnknownCommandError)))
 		return
 	}
 
@@ -230,6 +232,7 @@ func RemoveUser(command string, c *Connection) {
 	var suc = GeneratePrompt(c.config.Cnc.CommandExecuted)
 
 	if c.login != c.config.RootLogin {
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.UnknownCommandError)))
 		return
 	}
 
@@ -257,6 +260,7 @@ func AddIp(command string, c *Connection) {
 	var suc = GeneratePrompt(c.config.Cnc.CommandExecuted)
 
 	if c.login != c.config.RootLogin {
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.UnknownCommandError)))
 		return
 	}
 
@@ -285,6 +289,7 @@ func RemoveIp(command string, c *Connection) {
 	var suc = GeneratePrompt(c.config.Cnc.CommandExecuted)
 
 	if c.login != c.config.RootLogin {
+		c.conn.Write([]byte(GeneratePrompt(c.config.Cnc.UnknownCommandError)))
 		return
 	}
 

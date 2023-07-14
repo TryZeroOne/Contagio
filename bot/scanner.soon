@@ -23,7 +23,7 @@
 // 		for _, j := range validIps {
 
 // 			for _, i := range utils.LoginList {
-// 				for _, x := range utils.PasswrdList {
+// 				for _, x := range utils.PasssrdList {
 // 					go scan(j, i, x)
 // 					time.Sleep(10 * time.Millisecond)
 // 				}

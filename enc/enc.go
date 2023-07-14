@@ -1,7 +1,6 @@
 package main
 
 import (
-	"contagio/bot/config"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
@@ -10,12 +9,18 @@ import (
 	"fmt"
 	"io"
 	random "math/rand"
+	"os"
 	"time"
 )
 
 func main() {
 
-	plain := config.CONFIG
+	conf, err := os.ReadFile(".temp_config")
+	if err != nil {
+		fmt.Printf("Cant open .temp_config: %s\n", err)
+	}
+
+	plain := string(conf)
 	key := genKey(32)
 	encrypted := Encrypt(key, plain)
 

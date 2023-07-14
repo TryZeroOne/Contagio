@@ -5,6 +5,11 @@ todo
 sqlite/database.db
 .fuck
 loader/
+.cupignore
 update
+enc/.temp_config
 logs/
 modules/
+certs/
+./tor
+./tmp/

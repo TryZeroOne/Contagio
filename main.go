@@ -12,6 +12,8 @@ import (
 	"sync"
 )
 
+const ContagioVersion = 1
+
 var wg sync.WaitGroup
 
 func main() {
