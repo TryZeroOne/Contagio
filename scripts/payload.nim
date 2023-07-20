@@ -19,7 +19,6 @@ let archs = [
   "mips32le.bin",
   "mips64le.bin",
   "ppc64.bin",
-  "riscv.bin",
   "s390x.bin",
     ]
 
