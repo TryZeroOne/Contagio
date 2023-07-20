@@ -1,0 +1,7 @@
+sudo apt install tor 
+
+nano /etc/tor/torrc
+
+
+HiddenServiceDir /var/lib/tor/[name]/
+HiddenServicePort [.onion_port] [ip:port] 

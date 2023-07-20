@@ -19,11 +19,12 @@ all() {
 
     echo -e "$INFO Vlang installation..."
 
-    git clone --depth=1 https://github.com/vlang/v
-    cd v
+    rm -rf vlang
+    git clone --depth=1 https://github.com/vlang/v vlang
+    cd vlang
     make
     # mv ../v/ /opt
-    ./v symlink 
+    ./v symlink
     cd ..
     # cd ..
 
@@ -362,7 +363,7 @@ clean() {
     v installer/update.v -o cup
     sudo cp cup /bin/
 
-    rm -rf themes config.toml assets sqlite tests README.md .gitignore setup.txt go.mod go.sum installer
+    rm -rf themes config.toml assets sqlite tests README.md .gitignore setup.txt go.mod go.sum installer cup
 
     mkdir themes
     curl https://raw.githubusercontent.com/TryZeroOne/Contagio/main/installer/empty_config.toml -o config.toml
@@ -375,7 +376,8 @@ default() {
     cd Contagio
     v installer/update.v -o cup
     sudo cp cup /bin/
-    rm -rf installer go.mod go.sum
+
+    rm -rf installer go.mod go.sum cup
 }
 
 if [[ $1 == "-clean" ]]; then

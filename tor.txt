@@ -1,1 +1,23 @@
-floooofoofofofofofofofofofoo
+Tor Proxy: 
+# install obfs4proxy: 
+apt install obfs4proxy 
+cp /etc/tor/torrc{,.original}
+ufw allow 9050/tcp
+ufw allow 9050/udp
+
+nano /etc/tor/torrc 
+
+# add 
+
+PublishServerDescriptor 0
+
+#Bridge config
+SocksPort ip:9050
+SocksPolicy accept 0.0.0.0
+
+ORPort 9001
+BridgeRelay 1
+ContactInfo fooo
+Nickname foo
+ServerTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+ExtORPort auto

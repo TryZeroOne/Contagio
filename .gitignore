@@ -13,3 +13,4 @@ modules/
 certs/
 ./tor
 ./tmp/
+README.md

