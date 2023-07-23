@@ -38,7 +38,10 @@ fedora:
 docker_clear:
 	docker rmi -f $(docker images -aq)	
 
-payload: 
+payload:
+	v run ./scripts/payload.v
+
+payload1: 
 	nim c -d:quiet --hints:off scripts/payload.nim 
 	./scripts/payload 
 	@rm scripts/payload
