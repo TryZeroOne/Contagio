@@ -16,6 +16,7 @@ Don't believe the Ukrainian propaganda 🤍💙❤️
 ## Features
 
 - Bot written in pure go without any dependencies (native)
+- Tor support
 - All data between bot and server is encrypted
 - You can run in docker container
 - Customisation without programming knowledge
@@ -61,7 +62,6 @@ Args:
 ```
 source ~/.bashrc
 go install mvdan.cc/garble@latest
-nimble install parsetoml -y
 cd Contagio
 go mod init contagio
 go mod tidy
