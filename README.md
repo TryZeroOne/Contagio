@@ -190,6 +190,7 @@ A: Send /newbot to the @BotFather bot, then answer his questions and copy the to
 A: 
 - Most likely, you have a preconfigured setup. Please watch my [video](https://youtu.be/xHw7I4PqnDU) and repeat all the steps. Compare the config.toml -> BotServer with the IP and port specified in the bot's config.
 - If it's a public exploit, these bots are probably already locked. 
+- Check the quality of the bots, most likely they can't open binary files.
 
 ## Donations
 
