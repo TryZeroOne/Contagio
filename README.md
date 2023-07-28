@@ -184,9 +184,12 @@ If that doesn't work, create an [issue](github.com/TryZeroOne/Contagio/issues)
 
 A: Send /newbot to the @BotFather bot, then answer his questions and copy the token (Token example: 1234545:DDDDD\_\_ASDADAHUQHHHI34I29I).
 
+
 #### Q: My bots are not connecting
 
-A: Most likely, you have a preconfigured setup. Please watch my [video](https://youtu.be/xHw7I4PqnDU) and repeat all the steps. Compare the config.toml -> BotServer with the IP and port specified in the bot's config.
+A: 
+- Most likely, you have a preconfigured setup. Please watch my [video](https://youtu.be/xHw7I4PqnDU) and repeat all the steps. Compare the config.toml -> BotServer with the IP and port specified in the bot's config.
+- If it's a public exploit, these bots are probably already locked. 
 
 ## Donations
 
