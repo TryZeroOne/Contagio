@@ -1,5 +1,7 @@
 # Contagio
 
+C++ closed version: https://github.com/TryZeroOne/Contagio-closed
+
 Contagio is a botnet written in go.
 This is a beta version so there may be bugs.
 Read the FAQ and documentation before creating an issue.
